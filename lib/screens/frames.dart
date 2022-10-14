@@ -99,9 +99,7 @@ class _FramesState extends State<Frames> {
             child: InkWell(
               onTap: () {
                 interstitialAds();
-                // if (isLoaded) {
-                //   interstitialAd.show();
-                // }
+             
                 Navigator.of(context).pushNamed(
                   "framepage",
                   arguments: [
