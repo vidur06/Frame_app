@@ -1,10 +1,7 @@
 
 
-// ignore_for_file: unnecessary_statements
-
 import 'dart:typed_data';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import '../models/model.dart';
@@ -19,15 +16,12 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   late Future<List<Storage>> fetchdata;
   @override
   void initState() {
     super.initState();
     fetchdata = DBHelper.dbHelper.fetchAllData();
     checkDB();
-     navigatorObservers:
-    [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
   Future<void> checkDB() async {
