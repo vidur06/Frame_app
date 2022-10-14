@@ -26,7 +26,9 @@ void main() {
           ),
         ),
       );
-      await tester.pump(const Duration(seconds: 5));
+      await tester.pump(
+        const Duration(seconds: 5),
+      );
       expect(childWidget, findsOneWidget);
     });
   });
@@ -187,6 +189,33 @@ void main() {
                   padding: EdgeInsets.all(8.0),
                   child: childWidget1,
                 ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(childWidget, findsOneWidget);
+      expect(find.byWidget(childWidget1), findsOneWidget);
+    });
+    testWidgets('find padding Widget', (tester) async {
+      final childWidget = find.byKey(const ValueKey("Drawer"));
+      const childWidget1 = Padding(
+        padding: EdgeInsets.only(
+          top: 8,
+          bottom: 20,
+          left: 10,
+          right: 10,
+        ),
+      );
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: Opacity(
+              opacity: 0.95,
+              child: Drawer(
+                key: ValueKey("Drawer"),
+                child: childWidget1,
               ),
             ),
           ),
