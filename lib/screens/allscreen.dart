@@ -72,8 +72,12 @@ class _DashBoardState extends State<DashBoard> {
     return Scaffold(
       primary: true,
       appBar: AppBar(
-        title: const Text("dash Board"),
+        title: const Text(
+          "dash Board",
+          key: ValueKey("dash Board"),
+        ),
         leading: IconButton(
+          key: const ValueKey("drawer tap"),
           onPressed: () {
             if (_drawerscaffoldkey.currentState!.isDrawerOpen) {
               Navigator.pop(context);
@@ -87,8 +91,10 @@ class _DashBoardState extends State<DashBoard> {
       body: Scaffold(
         key: _drawerscaffoldkey,
         drawer: Opacity(
+          key: const ValueKey("Opacity"),
           opacity: 0.95,
           child: Drawer(
+            key: const ValueKey("Drawer"),
             backgroundColor: Colors.grey[200],
             child: Column(
               children: [

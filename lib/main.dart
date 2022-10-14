@@ -81,19 +81,22 @@ class _MyHomePageState extends State<MyHomePage> {
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
             icon: const Icon(Icons.dashboard),
-            title: const Text("Dash Board"),
+            title: const Text(
+              "Dash Board",
+              key: ValueKey("Dash Board"),
+            ),
             activeColor: Colors.blue,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
             icon: const Icon(Icons.auto_mode_rounded),
-            title: const Text("Story"),
+            title: const Text("Story", key: ValueKey("Story")),
             activeColor: Colors.blue,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
             icon: const Icon(Icons.settings),
-            title: const Text("Settings"),
+            title: const Text("Settings", key: ValueKey("Settings")),
             activeColor: Colors.blue,
             textAlign: TextAlign.center,
           ),
