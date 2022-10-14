@@ -1,6 +1,3 @@
-// ignore_for_file: unnecessary_statements
-
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -13,20 +10,15 @@ class Frames extends StatefulWidget {
 }
 
 class _FramesState extends State<Frames> {
-
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    navigatorObservers:
-    [FirebaseAnalyticsObserver(analytics: analytics)];
-  }
   late InterstitialAd interstitialAd;
   RewardedAd? rewardedAd;
   bool isLoaded = true;
   bool isRewarded = true;
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   void interstitialAds() {
     InterstitialAd.load(

@@ -1,8 +1,5 @@
-// ignore_for_file: unnecessary_statements
-
 import 'dart:typed_data';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:screenshot/screenshot.dart';
@@ -25,7 +22,6 @@ List<Uint8List> data = [];
 int i = 0;
 
 class _FramePageState extends State<FramePage> {
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   late Future<List<Storage>> fetchdata;
   Future<void> checkDB() async {
     await DBHelper.dbHelper.initDB();
@@ -36,8 +32,6 @@ class _FramePageState extends State<FramePage> {
     super.initState();
     fetchdata = DBHelper.dbHelper.fetchAllData();
     checkDB();
-     navigatorObservers:
-    [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
   PhotoViewController controller1 = PhotoViewController();
