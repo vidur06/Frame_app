@@ -1,6 +1,9 @@
+// ignore_for_file: unnecessary_statements
+
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +20,7 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   List image = [
     "assets/images/ad1.jpg",
     "assets/images/ad2.jpg",
@@ -26,6 +30,8 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     super.initState();
     items.addAll(drawer);
+    navigatorObservers:
+    [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
   final GlobalKey<ScaffoldState> _drawerscaffoldkey =
@@ -253,14 +259,19 @@ class _DashBoardState extends State<DashBoard> {
                         ),
                       ),
                     ),
-                    LableWidget(
-                      text: "Rate",
-                      color1: Colors.orange,
-                      color2: Colors.yellow.shade700,
-                      icon: const Icon(
-                        Icons.star_sharp,
-                        color: Colors.white,
-                        size: 45,
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pushNamed('ratepage');
+                      },
+                      child: LableWidget(
+                        text: "Rate",
+                        color1: Colors.orange,
+                        color2: Colors.yellow.shade700,
+                        icon: const Icon(
+                          Icons.star_sharp,
+                          color: Colors.white,
+                          size: 45,
+                        ),
                       ),
                     ),
                   ],
