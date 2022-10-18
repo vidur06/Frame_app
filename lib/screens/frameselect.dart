@@ -1,8 +1,5 @@
-// ignore_for_file: unnecessary_statements
-
 import 'dart:io';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,14 +11,6 @@ class SelectFrame extends StatefulWidget {
 }
 
 class _SelectFrameState extends State<SelectFrame> {
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    navigatorObservers:
-    [FirebaseAnalyticsObserver(analytics: analytics)];
-  }
   List frames = [
     "assets/images/navratri.png",
     "assets/images/diwali.jpg",
