@@ -83,11 +83,7 @@ class _StickerPageState extends State<StickerPage> {
 
               await ImageGallerySaver.saveImage(image);
               // ignore: use_build_context_synchronously
-              ShowCapturedWidget(context, image);
-
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //     'savePage', (route) => false,
-              //     arguments: image);
+              // ShowCapturedWidget(context, image);
             },
             icon: const Icon(
               Icons.done,
@@ -96,7 +92,20 @@ class _StickerPageState extends State<StickerPage> {
           ),
         ],
       ),
-      body: _stickIt,
+      body: StickIt(
+        stickerList: [
+          Image.asset("assets/sticker/s1.png"),
+          Image.asset("assets/sticker/s2.png"),
+          Image.asset("assets/sticker/s3.png"),
+          Image.asset("assets/sticker/s4.png"),
+          Image.asset("assets/sticker/s5.png"),
+          Image.asset("assets/sticker/s6.png"),
+          Image.asset("assets/sticker/s7.png"),
+          Image.asset("assets/sticker/s8.png"),
+          Image.asset("assets/sticker/s9.png"),
+        ],
+        child: Container(color: Colors.white, child: Image.memory(arg)),
+      ),
     );
   }
 

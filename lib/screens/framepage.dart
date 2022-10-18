@@ -146,8 +146,7 @@ class _FramePageState extends State<FramePage> {
                             ),
                           ),
                         ),
-                        // (frame.isNotEmpty)
-                        //     ?
+
                         IgnorePointer(
                           child: Container(
                             margin: const EdgeInsets.all(10),
@@ -159,41 +158,14 @@ class _FramePageState extends State<FramePage> {
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            // child: Image.asset(
-                            //   frame,
-                            //   fit: BoxFit.contain,
-                            // ),
                           ),
                         ),
-                        // : Container(),
-                        // Column(
-                        //     children: us_list
-                        //         .map(
-                        //           (e) =>
+
                         (sticker.isNotEmpty)
-                            ?
-                            // DragImage(
-                            //     const Offset(0, 0),
-                            //     sticker,
-                            //   )
-                            Positioned(
+                            ? Positioned(
                                 left: offset.dx,
                                 top: offset.dy,
                                 child: GestureDetector(
-                                  // onDoubleTap: () {
-                                  //   setState(() {
-                                  //     height = height + 20;
-                                  //     width = width + 20;
-                                  //   });
-                                  // },
-                                  // onTap: () {
-                                  //   if (height != 30) {
-                                  //     setState(() {
-                                  //       height = height - 20;
-                                  //       width = width - 20;
-                                  //     });
-                                  //   }
-                                  // },
                                   onScaleStart: (ScaleStartDetails details) {
                                     // ignore: avoid_print
                                     print(details);
@@ -212,14 +184,6 @@ class _FramePageState extends State<FramePage> {
                                     _previousScale = 1.0;
                                     setState(() {});
                                   },
-                                  // onPanUpdate: (details) {
-                                  //   setState(() {
-                                  //     offset = Offset(
-                                  //         offset.dx + details.delta.dx,
-                                  //         offset.dy + details.delta.dy);
-                                  //   });
-                                  // },
-
                                   child: RotatedBox(
                                     quarterTurns: rotation.toInt(),
                                     child: Transform(
@@ -229,12 +193,9 @@ class _FramePageState extends State<FramePage> {
                                       ),
                                       child: Image(
                                         image: AssetImage(sticker),
-                                        // height: height,
-                                        // width: width,
                                       ),
                                     ),
                                   ),
-
                                   onVerticalDragUpdate: (DragUpdateDetails dd) {
                                     setState(() {
                                       offset = Offset(
@@ -243,12 +204,6 @@ class _FramePageState extends State<FramePage> {
                                       );
                                     });
                                   },
-                                  // onHorizontalDragUpdate: (dd) {
-                                  //   setState(() {
-                                  //     top = dd.localPosition.dy;
-                                  //     left = dd.localPosition.dx;
-                                  //   });
-                                  // },
                                 ),
                               )
                             : Container(),
@@ -265,47 +220,6 @@ class _FramePageState extends State<FramePage> {
                   color: Colors.white,
                   child: const Text("add Image"),
                 ),
-          // (res[0] != null && frm == true)
-          //     ? Expanded(
-          //         flex: 2,
-          //         child: ListView.builder(
-          //           scrollDirection: Axis.horizontal,
-          //           itemCount: res[1].length,
-          //           itemBuilder: (context, i) {
-          //             return Row(
-          //               mainAxisAlignment: MainAxisAlignment.start,
-          //               children: [
-          //                 Row(
-          //                   children: [
-          //                     InkWell(
-          //                       onTap: () {
-          //                         setState(() {
-          //                           frame = res[1][i];
-          //                         });
-          //                       },
-          //                       child: Container(
-          //                         height: 150,
-          //                         width: 150,
-          //                         margin: const EdgeInsets.all(6.0),
-          //                         decoration: BoxDecoration(
-          //                           color: Colors.white,
-          //                           border: Border.all(width: 2),
-          //                           borderRadius: BorderRadius.circular(10.0),
-          //                           image: DecorationImage(
-          //                             image: AssetImage("${res[1][i]}"),
-          //                             fit: BoxFit.cover,
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ],
-          //             );
-          //           },
-          //         ),
-          //       )
-          //     : Container(),
           const SizedBox(
             height: 20,
           ),
@@ -320,47 +234,6 @@ class _FramePageState extends State<FramePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // setState(() {
-                  //   frm = false;
-                  //   showModalBottomSheet(
-                  //       context: context,
-                  //       builder: (context) {
-                  //         return SizedBox(
-                  //           // height: 200,
-                  //           child: Column(
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             mainAxisSize: MainAxisSize.min,
-                  //             children: [
-                  //               Expanded(
-                  //                 child: GridView.count(
-                  //                     crossAxisCount: 4,
-                  //                     crossAxisSpacing: 4.0,
-                  //                     mainAxisSpacing: 5.0,
-                  //                     children:
-                  //                         List.generate(s_list.length, (i) {
-                  //                       return GestureDetector(
-                  //                         onTap: () {
-                  //                           setState(() {
-                  //                             sticker = s_list[i];
-                  //                             us_list.add(s_list[i]);
-                  //                           });
-                  //                           Navigator.pop(context);
-                  //                         },
-                  //                         child: Container(
-                  //                           height: 300,
-                  //                           width: 300,
-                  //                           child: Image.asset(
-                  //                             s_list[i],
-                  //                           ),
-                  //                         ),
-                  //                       );
-                  //                     })),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         );
-                  //       });
-                  // });
                   controller
                       .capture(delay: const Duration(milliseconds: 10))
                       .then((capturedImage) async {

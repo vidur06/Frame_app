@@ -1,5 +1,6 @@
+import 'package:festival_frame/screens/demo.dart';
 import 'package:festival_frame/screens/frames.dart';
-import 'package:festival_frame/screens/test.dart';
+import 'package:festival_frame/screens/final.dart';
 import 'package:flutter/material.dart';
 import 'package:festival_frame/screens/allscreen.dart';
 import 'package:festival_frame/screens/framepage.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         "setting": (context) => const Setting(),
         "sticker": (context) => const StickerPage(),
         "frames": (context) => const Frames(),
+        "demo": (context) => const DemoPage(),
       },
     );
   }

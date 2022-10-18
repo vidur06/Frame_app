@@ -23,7 +23,7 @@ class _SetImageState extends State<SetImage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Set Iamge",
+          "Set Image",
         ),
         centerTitle: true,
       ),

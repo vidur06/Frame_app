@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -22,6 +23,85 @@ class _DashBoardState extends State<DashBoard> {
     "assets/images/ad2.jpg",
     "assets/images/ad3.jpg",
   ];
+
+  List frames = [
+    "assets/images/navratri.png",
+    "assets/images/diwali.jpg",
+    "assets/images/rakhi.jpg",
+    "assets/images/mkr.jpg",
+    "assets/images/holi.png",
+    "assets/images/janmashtmi.jpg",
+    "assets/images/chrismas.jpg",
+  ];
+  List allframe = [
+    //navratri :-
+    [
+      "assets/images/n1.png",
+      "assets/images/n2.png",
+      "assets/images/n3.png",
+      "assets/images/n4.png",
+      "assets/images/n5.png",
+      "assets/images/n6.png",
+      "assets/images/n7.png",
+    ],
+    //diwali :-
+    [
+      "assets/images/d1.png",
+      "assets/images/d2.png",
+      "assets/images/d3.png",
+      "assets/images/d4.png",
+      "assets/images/d5.png",
+    ],
+    //rakhi:-
+    [
+      "assets/images/r1.png",
+      "assets/images/r2.png",
+      "assets/images/r3.png",
+      "assets/images/r4.png",
+    ],
+    //Makar Sankranti:-
+    [
+      "assets/images/m1.png",
+      "assets/images/m2.png",
+      "assets/images/m3.png",
+      "assets/images/m5.png",
+    ],
+    //holi:-
+    [
+      "assets/images/h1.png",
+      "assets/images/h2.png",
+      "assets/images/h3.png",
+      "assets/images/h4.png",
+      "assets/images/h5.png",
+    ],
+    //janmastmi:-
+    [
+      "assets/images/j1.png",
+      "assets/images/j2.png",
+      "assets/images/j3.png",
+      "assets/images/j4.png",
+      "assets/images/j5.png",
+    ],
+    //chrishmas:-
+    [
+      "assets/images/c1.png",
+      "assets/images/c2.png",
+      "assets/images/c3.png",
+      "assets/images/c4.png",
+      "assets/images/c5.png",
+    ],
+  ];
+
+  List name = [
+    "Navratri",
+    "Diwali",
+    "Rakhi",
+    "Makar Sankranti",
+    "Holi",
+    "Janmashtmi",
+    "marry Chrishmas"
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -36,13 +116,13 @@ class _DashBoardState extends State<DashBoard> {
 
   String userImage = "";
   List<String> drawer = [
-    "Diwali",
-    "Holi",
     "Navratri",
-    "Chrismas",
+    "Diwali",
     "Rakhi",
+    "Makar Sankranti",
+    "Holi",
     "Janmashtmi",
-    "Makar Sankratri",
+    "marry Chrishmas"
   ];
   void filterSearchResults(String query) {
     final List<String> dummySearchList = [];
@@ -136,11 +216,21 @@ class _DashBoardState extends State<DashBoard> {
                     itemCount: items.length,
                     itemBuilder: (context, i) {
                       return InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            "frames",
-                            arguments: items[i],
+                        onTap: () async {
+                          final pickedFile = await picker.pickImage(
+                            source: ImageSource.gallery,
                           );
+                          // ignore: unnecessary_null_comparison
+                          if (pickedFile!.path != null) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pushNamed(
+                              "setimage",
+                              arguments: [
+                                File(pickedFile.path),
+                                allframe[i],
+                              ],
+                            );
+                          }
                         },
                         child: ListTile(
                           shape: (i == 0)
@@ -298,20 +388,28 @@ class _SettingState extends State<Setting> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("settings"),
+        title: const Text(
+          "settings",
+          key: ValueKey('appbar text'),
+        ),
       ),
       body: (res == null)
           ? Center(
+              key: const ValueKey("column"),
               child: Column(
+                key: const ValueKey("column"),
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
+                    key: const ValueKey("inkwell"),
                     onTap: () {
                       Navigator.of(context).pushNamed("imagepage");
                     },
                     child: const CircleAvatar(
+                      key: ValueKey("circle avtar"),
                       radius: 50,
                       child: Icon(
+                        key: ValueKey("icon"),
                         Icons.add,
                         size: 70,
                       ),
@@ -319,6 +417,7 @@ class _SettingState extends State<Setting> {
                   ),
                   const Text(
                     "Tap to select image",
+                    key: ValueKey("text"),
                     style: TextStyle(
                       fontSize: 18,
                     ),
