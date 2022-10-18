@@ -122,9 +122,6 @@ class _DashBoardState extends State<DashBoard> {
                     },
                     controller: editingController,
                     decoration: const InputDecoration(
-                      // focusedBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(color: Colors.redAccent),
-                      // ),
                       contentPadding: EdgeInsets.symmetric(
                         vertical: 20.0,
                         horizontal: 10.0,
@@ -193,7 +190,6 @@ class _DashBoardState extends State<DashBoard> {
                         child: Container(
                           width: 385,
                           decoration: BoxDecoration(
-                            // borderRadius: BorderRadius.circular(8.0),
                             image: DecorationImage(
                               image: AssetImage("$e"),
                               fit: BoxFit.cover,
@@ -220,13 +216,6 @@ class _DashBoardState extends State<DashBoard> {
                     InkWell(
                       onTap: () async {
                         Navigator.of(context).pushNamed("select_frame");
-
-                        // final pickedFile =
-                        //     await picker.pickImage(source: ImageSource.gallery);
-                        // if (pickedFile!.path != null) {
-                        //   Navigator.of(context).pushNamed("setimage",
-                        //       arguments: File(pickedFile.path));
-                        // }
                       },
                       child: LableWidget(
                         text: "Frame",

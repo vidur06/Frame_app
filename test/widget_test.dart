@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stick_it/stick_it.dart';
@@ -98,14 +99,13 @@ void main() {
           ),
         ),
       );
+      await tester.tap(find.byIcon(Icons.menu));
       await tester.pump();
       expect(childWidget, findsOneWidget);
       expect(childWidget1, findsOneWidget);
     });
     testWidgets('find Opacity Widget', (tester) async {
       final childWidget = find.byKey(const ValueKey("Opacity"));
-      final GlobalKey<ScaffoldState> _drawerscaffoldkey =
-          GlobalKey<ScaffoldState>();
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -240,6 +240,94 @@ void main() {
       );
       await tester.pump();
       expect(childWidget, findsOneWidget);
+      expect(find.byWidget(childWidget1), findsOneWidget);
+    });
+    testWidgets('find textfield Widget', (tester) async {
+      final childWidget = find.byKey(const ValueKey("Drawer"));
+      const icon = Icon(Icons.search);
+      const childWidget1 = TextField(
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(
+            vertical: 20.0,
+            horizontal: 10.0,
+          ),
+          hintText: "Search",
+          prefixIcon: icon,
+        ),
+      );
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: Opacity(
+              opacity: 0.95,
+              child: Drawer(
+                key: ValueKey("Drawer"),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 8,
+                    bottom: 20,
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: childWidget1,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.byIcon(Icons.search));
+      await tester.pump();
+      expect(childWidget, findsOneWidget);
+      expect(find.byIcon(Icons.search), findsOneWidget);
+      expect(find.byWidget(childWidget1), findsOneWidget);
+      expect(find.byWidget(icon), findsOneWidget);
+    });
+
+    testWidgets('find Carosal Slider Widget', (tester) async {
+      List image = [
+        "assets/images/ad1.jpg",
+        "assets/images/ad2.jpg",
+        "assets/images/ad3.jpg",
+      ];
+      final childWidget1 = CarouselSlider(
+        items: image.map((e) {
+          return Builder(
+            builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Container(
+                  width: 385,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("$e"),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }).toList(),
+        options: CarouselOptions(
+          enlargeCenterPage: true,
+          autoPlay: true,
+          reverse: true,
+          height: 170,
+          viewportFraction: 1,
+        ),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+              body: Column(
+            children: [
+              childWidget1,
+            ],
+          )),
+        ),
+      );
+      await tester.pump();
       expect(find.byWidget(childWidget1), findsOneWidget);
     });
   });
