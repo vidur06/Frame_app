@@ -1,6 +1,9 @@
+// ignore_for_file: unnecessary_statements
+
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +20,7 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   List image = [
     "assets/images/ad1.jpg",
     "assets/images/ad2.jpg",
@@ -26,6 +30,8 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     super.initState();
     items.addAll(drawer);
+    navigatorObservers:
+    [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
   final GlobalKey<ScaffoldState> _drawerscaffoldkey =
@@ -72,12 +78,8 @@ class _DashBoardState extends State<DashBoard> {
     return Scaffold(
       primary: true,
       appBar: AppBar(
-        title: const Text(
-          "dash Board",
-          key: ValueKey("dash Board"),
-        ),
+        title: const Text("Dashboard"),
         leading: IconButton(
-          key: const ValueKey("drawer tap"),
           onPressed: () {
             if (_drawerscaffoldkey.currentState!.isDrawerOpen) {
               Navigator.pop(context);
@@ -91,10 +93,8 @@ class _DashBoardState extends State<DashBoard> {
       body: Scaffold(
         key: _drawerscaffoldkey,
         drawer: Opacity(
-          key: const ValueKey("Opacity"),
           opacity: 0.95,
           child: Drawer(
-            key: const ValueKey("Drawer"),
             backgroundColor: Colors.grey[200],
             child: Column(
               children: [
@@ -243,14 +243,19 @@ class _DashBoardState extends State<DashBoard> {
                         ),
                       ),
                     ),
-                    LableWidget(
-                      text: "Rate",
-                      color1: Colors.orange,
-                      color2: Colors.yellow.shade700,
-                      icon: const Icon(
-                        Icons.star_sharp,
-                        color: Colors.white,
-                        size: 45,
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pushNamed('ratepage');
+                      },
+                      child: LableWidget(
+                        text: "Rate",
+                        color1: Colors.orange,
+                        color2: Colors.yellow.shade700,
+                        icon: const Icon(
+                          Icons.star_sharp,
+                          color: Colors.white,
+                          size: 45,
+                        ),
                       ),
                     ),
                   ],

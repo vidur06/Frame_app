@@ -1,5 +1,10 @@
+import 'package:festival_frame/screens/demo.dart';
 import 'package:festival_frame/screens/frames.dart';
+import 'package:festival_frame/screens/ratepage.dart';
 import 'package:festival_frame/screens/test.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:festival_frame/screens/allscreen.dart';
 import 'package:festival_frame/screens/framepage.dart';
@@ -11,21 +16,31 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'screens/imagepage.dart';
 import 'screens/splashscreen.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async {
+   WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  //   FirebaseCrashlytics.instance.crash();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   MobileAds.instance.initialize();
 
-  runApp(const MyApp());
+  runApp(MyApp());
+  // ignore: unnecessary_statements
+  (error, stack) =>
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+   MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'splashscreen',
+      initialRoute: 'demo',
       routes: {
         "splashscreen": (context) => const SplashScreen(),
         "dashboard": (context) => const DashBoard(),
@@ -37,7 +52,10 @@ class MyApp extends StatelessWidget {
         "setting": (context) => const Setting(),
         "sticker": (context) => const StickerPage(),
         "frames": (context) => const Frames(),
+        'ratepage': (contrxt) => const RatePage(),
+        'demo': (context) =>  CustomPainterDraggable(),
       },
+      navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
     );
   }
 }
@@ -81,22 +99,19 @@ class _MyHomePageState extends State<MyHomePage> {
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
             icon: const Icon(Icons.dashboard),
-            title: const Text(
-              "Dash Board",
-              key: ValueKey("Dash Board"),
-            ),
+            title: const Text("Dash Board"),
             activeColor: Colors.blue,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
             icon: const Icon(Icons.auto_mode_rounded),
-            title: const Text("Story", key: ValueKey("Story")),
+            title: const Text("Story"),
             activeColor: Colors.blue,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
             icon: const Icon(Icons.settings),
-            title: const Text("Settings", key: ValueKey("Settings")),
+            title: const Text("Settings"),
             activeColor: Colors.blue,
             textAlign: TextAlign.center,
           ),
