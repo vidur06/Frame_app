@@ -1,10 +1,3 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -13,7 +6,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:festival_frame/models/model.dart';
 import 'package:festival_frame/models/sqlhelper.dart';
 import 'package:festival_frame/screens/allscreen.dart';
-import 'package:festival_frame/screens/demo.dart';
 import 'package:festival_frame/screens/final.dart';
 import 'package:festival_frame/screens/framepage.dart';
 import 'package:festival_frame/screens/frameselect.dart';
@@ -24,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:festival_frame/main.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:stick_it/stick_it.dart';
 
 void main() {
@@ -897,6 +891,34 @@ void main() {
       expect(expanded, findsWidgets);
       expect(gesture, findsWidgets);
       expect(stack, findsWidgets);
+    });
+  });
+
+  group('sticker page', () {
+    testWidgets('Sticker Screen Testing', (tester) async {
+      StickIt _stickIt = StickIt(
+        stickerList: [
+          Image.asset("assets/sticker/s1.png"),
+          Image.asset("assets/sticker/s2.png"),
+          Image.asset("assets/sticker/s3.png"),
+          Image.asset("assets/sticker/s4.png"),
+          Image.asset("assets/sticker/s5.png"),
+          Image.asset("assets/sticker/s6.png"),
+          Image.asset("assets/sticker/s7.png"),
+          Image.asset("assets/sticker/s8.png"),
+          Image.asset("assets/sticker/s9.png"),
+        ],
+        child: Container(),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: _stickIt,
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.byWidget(_stickIt), findsWidgets);
     });
   });
 
