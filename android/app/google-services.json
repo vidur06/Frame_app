@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "974291294225",
+    "project_id": "frame-app-a71b9",
+    "storage_bucket": "frame-app-a71b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974291294225:android:e1cd715a85809fbdeeb9b0",
+        "android_client_info": {
+          "package_name": "com.example.festival_frame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974291294225-db081h2ei7pgi88go76i87i9219mjl63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdip7YDEUpFyFZJcfNzl-PtSCvKyU0GGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974291294225-db081h2ei7pgi88go76i87i9219mjl63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,8 @@
+// ignore_for_file: unnecessary_statements
+
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -11,9 +14,13 @@ class SetImage extends StatefulWidget {
 }
 
 class _SetImageState extends State<SetImage> {
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
+    navigatorObservers:
+    [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
   File? imagefile;
