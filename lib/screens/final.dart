@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -26,6 +27,7 @@ class _StickerPageState extends State<StickerPage> {
   ScreenshotController screenshotController = ScreenshotController();
   late StickIt _stickIt;
   late Future<List<Storage>> fetchdata;
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +44,7 @@ class _StickerPageState extends State<StickerPage> {
   RewardedAd? rewardedAd;
   bool isRewarded = false;
 
-  rewardedAds() {
+  void rewardedAds() {
     RewardedAd.load(
       adUnitId: 'ca-app-pub-6380676578937457/8194624838',
       request: const AdRequest(),
@@ -97,26 +99,9 @@ class _StickerPageState extends State<StickerPage> {
             onPressed: () async {
               final image = await _stickIt.exportImage();
 
-              final Map<String, dynamic> data = {
-                'image': image,
-              };
-              final Storage s = Storage.fromMap(data);
-              await DBHelper.dbHelper.insert(s);
               // ignore: use_build_context_synchronously
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Image saved successfully"),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              setState(() {
-                fetchdata = DBHelper.dbHelper.fetchAllData();
-              });
+              SaveDB.Store(context, image, fetchdata);
 
-              await ImageGallerySaver.saveImage(image);
-              // ignore: use_build_context_synchronously
-              // ShowCapturedWidget(context, image);
-              // File file = File.fromRawPath(image);
               ShowCapturedWidget(context, image);
               rewardedAds();
               if (isRewarded) {
@@ -124,9 +109,6 @@ class _StickerPageState extends State<StickerPage> {
                   onUserEarnedReward: (ad, reward) {},
                 );
               }
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //     'savePage', (route) => false,
-              //     arguments: image);
             },
             icon: const Icon(
               Icons.done,
@@ -135,20 +117,7 @@ class _StickerPageState extends State<StickerPage> {
           ),
         ],
       ),
-      body: StickIt(
-        stickerList: [
-          Image.asset("assets/sticker/s1.png"),
-          Image.asset("assets/sticker/s2.png"),
-          Image.asset("assets/sticker/s3.png"),
-          Image.asset("assets/sticker/s4.png"),
-          Image.asset("assets/sticker/s5.png"),
-          Image.asset("assets/sticker/s6.png"),
-          Image.asset("assets/sticker/s7.png"),
-          Image.asset("assets/sticker/s8.png"),
-          Image.asset("assets/sticker/s9.png"),
-        ],
-        child: Container(color: Colors.white, child: Image.memory(arg)),
-      ),
+      body: _stickIt,
     );
   }
 

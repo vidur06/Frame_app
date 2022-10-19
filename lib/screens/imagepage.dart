@@ -1,9 +1,8 @@
-
-
 // ignore_for_file: unnecessary_statements
 
 import 'dart:typed_data';
 
+import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +25,7 @@ class _AlbumPageState extends State<AlbumPage> {
     super.initState();
     fetchdata = DBHelper.dbHelper.fetchAllData();
     checkDB();
-     navigatorObservers:
+    navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
@@ -93,7 +92,7 @@ class _AlbumPageState extends State<AlbumPage> {
                                 const SizedBox(width: 10),
                                 ElevatedButton(
                                   onPressed: () async {
-                                    await DBHelper.dbHelper.delete(data[i].id);
+                                    DeleteDB.Deletedb(data[i].id);
                                     setState(() {
                                       fetchdata =
                                           DBHelper.dbHelper.fetchAllData();

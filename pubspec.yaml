@@ -60,7 +60,6 @@ dependencies:
   share_plus: ^4.5.3
   confetti: ^0.7.0
   smooth_star_rating_null_safety: ^1.0.4+2
-  google_ml_face_detection: ^0.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -13,20 +13,17 @@ class Frames extends StatefulWidget {
 }
 
 class _FramesState extends State<Frames> {
-
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
+
   late InterstitialAd interstitialAd;
   RewardedAd? rewardedAd;
   bool isLoaded = true;
   bool isRewarded = true;
-
 
   void interstitialAds() {
     InterstitialAd.load(
@@ -99,7 +96,10 @@ class _FramesState extends State<Frames> {
             child: InkWell(
               onTap: () {
                 interstitialAds();
-
+                // rewardedAds();
+                if (isLoaded) {
+                  interstitialAd.show();
+                }
                 Navigator.of(context).pushNamed(
                   "framepage",
                   arguments: [

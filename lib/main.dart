@@ -1,14 +1,10 @@
-import 'package:festival_frame/screens/demo.dart';
 import 'package:festival_frame/screens/frames.dart';
-<<<<<<< HEAD
 import 'package:festival_frame/screens/final.dart';
-=======
 import 'package:festival_frame/screens/ratepage.dart';
-import 'package:festival_frame/screens/test.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
->>>>>>> 5d2e50150736d581315af203bc6d51add4e8f17d
+
 import 'package:flutter/material.dart';
 import 'package:festival_frame/screens/allscreen.dart';
 import 'package:festival_frame/screens/framepage.dart';
@@ -21,28 +17,16 @@ import 'screens/imagepage.dart';
 import 'screens/splashscreen.dart';
 
 void main() async {
-   WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   //   FirebaseCrashlytics.instance.crash();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   MobileAds.instance.initialize();
-
-  runApp(MyApp());
-  // ignore: unnecessary_statements
-  (error, stack) =>
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  
-}
-
-class MyApp extends StatelessWidget {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-   MyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    
-    return MaterialApp(
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: 'demo',
       routes: {
@@ -56,16 +40,14 @@ class MyApp extends StatelessWidget {
         "setting": (context) => const Setting(),
         "sticker": (context) => const StickerPage(),
         "frames": (context) => const Frames(),
-<<<<<<< HEAD
-        "demo": (context) => const DemoPage(),
-=======
         'ratepage': (contrxt) => const RatePage(),
-        'demo': (context) =>  CustomPainterDraggable(),
->>>>>>> 5d2e50150736d581315af203bc6d51add4e8f17d
       },
       navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
-    );
-  }
+    ),
+  );
+  // ignore: unnecessary_statements
+  (error, stack) =>
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
 }
 
 class MyHomePage extends StatefulWidget {

@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import 'dart:io';
-=======
 // ignore_for_file: unnecessary_statements
 
->>>>>>> 5d2e50150736d581315af203bc6d51add4e8f17d
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -14,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:screenshot/screenshot.dart';
 
+import '../models/unit.dart';
 import '../widgets/widgets.dart';
 
 class DashBoard extends StatefulWidget {
@@ -131,8 +129,9 @@ class _DashBoardState extends State<DashBoard> {
     "Makar Sankranti",
     "Holi",
     "Janmashtmi",
-    "marry Chrishmas"
+    "marry Chrishmas",
   ];
+
   void filterSearchResults(String query) {
     final List<String> dummySearchList = [];
     dummySearchList.addAll(drawer);
@@ -220,11 +219,9 @@ class _DashBoardState extends State<DashBoard> {
                     itemBuilder: (context, i) {
                       return InkWell(
                         onTap: () async {
-                          final pickedFile = await picker.pickImage(
-                            source: ImageSource.gallery,
-                          );
+                          final pickedFile = await Imagepick.imagepic();
                           // ignore: unnecessary_null_comparison
-                          if (pickedFile!.path != null) {
+                          if (pickedFile.path != null) {
                             // ignore: use_build_context_synchronously
                             Navigator.of(context).pushNamed(
                               "setimage",
@@ -308,7 +305,7 @@ class _DashBoardState extends State<DashBoard> {
                   children: [
                     InkWell(
                       onTap: () async {
-                        Navigator.of(context).pushNamed("select_frame");
+                        Navigation.Select_Frame(context);
                       },
                       child: LableWidget(
                         text: "Frame",
@@ -323,7 +320,7 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).pushNamed("imagepage");
+                        Navigation.ImagePage(context);
                       },
                       child: LableWidget(
                         text: "Album",
@@ -337,8 +334,8 @@ class _DashBoardState extends State<DashBoard> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).pushNamed('ratepage');
+                      onTap: () {
+                        Navigation.Ratepage(context);
                       },
                       child: LableWidget(
                         text: "Rate",
@@ -403,7 +400,7 @@ class _SettingState extends State<Setting> {
       ),
       body: (res == null)
           ? Center(
-              key: const ValueKey("column"),
+              key: const ValueKey("center"),
               child: Column(
                 key: const ValueKey("column"),
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -411,7 +408,7 @@ class _SettingState extends State<Setting> {
                   InkWell(
                     key: const ValueKey("inkwell"),
                     onTap: () {
-                      Navigator.of(context).pushNamed("imagepage");
+                      Navigation.ImagePage(context);
                     },
                     child: const CircleAvatar(
                       key: ValueKey("circle avtar"),
@@ -519,23 +516,7 @@ class _SettingState extends State<Setting> {
                       minimumSize: const Size(300, 45),
                     ),
                     onPressed: () {
-                      controller
-                          .capture(
-                        delay: const Duration(milliseconds: 10),
-                      )
-                          .then((capturedImage) async {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("image Exported"),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-
-                        await ImageGallerySaver.saveImage(capturedImage!);
-                      }).catchError((onError) {
-                        // ignore: avoid_print
-                        print(onError);
-                      });
+                      ScreenCapture.Capture(context, controller);
                     },
                     child: const Text("Export"),
                   ),

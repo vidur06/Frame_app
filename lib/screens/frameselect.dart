@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +23,7 @@ class _SelectFrameState extends State<SelectFrame> {
     navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
+
   List frames = [
     "assets/images/navratri.png",
     "assets/images/diwali.jpg",
@@ -130,10 +132,9 @@ class _SelectFrameState extends State<SelectFrame> {
               children: List.generate(frames.length, (i) {
                 return GestureDetector(
                   onTap: () async {
-                    final pickedFile =
-                        await picker.pickImage(source: ImageSource.gallery);
+                    final pickedFile = await Imagepick.imagepic();
                     // ignore: unnecessary_null_comparison
-                    if (pickedFile!.path != null) {
+                    if (pickedFile.path != null) {
                       // ignore: use_build_context_synchronously
                       Navigator.of(context).pushNamed(
                         "setimage",
