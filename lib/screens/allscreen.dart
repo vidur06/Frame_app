@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import 'dart:io';
-=======
 // ignore_for_file: unnecessary_statements
 
->>>>>>> 5d2e50150736d581315af203bc6d51add4e8f17d
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';

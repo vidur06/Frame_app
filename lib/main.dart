@@ -1,14 +1,9 @@
-import 'package:festival_frame/screens/demo.dart';
 import 'package:festival_frame/screens/frames.dart';
-<<<<<<< HEAD
 import 'package:festival_frame/screens/final.dart';
-=======
 import 'package:festival_frame/screens/ratepage.dart';
-import 'package:festival_frame/screens/test.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
->>>>>>> 5d2e50150736d581315af203bc6d51add4e8f17d
 import 'package:flutter/material.dart';
 import 'package:festival_frame/screens/allscreen.dart';
 import 'package:festival_frame/screens/framepage.dart';
@@ -44,7 +39,7 @@ class MyApp extends StatelessWidget {
     
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'demo',
+      initialRoute: 'splashscreen',
       routes: {
         "splashscreen": (context) => const SplashScreen(),
         "dashboard": (context) => const DashBoard(),
@@ -56,12 +51,7 @@ class MyApp extends StatelessWidget {
         "setting": (context) => const Setting(),
         "sticker": (context) => const StickerPage(),
         "frames": (context) => const Frames(),
-<<<<<<< HEAD
-        "demo": (context) => const DemoPage(),
-=======
         'ratepage': (contrxt) => const RatePage(),
-        'demo': (context) =>  CustomPainterDraggable(),
->>>>>>> 5d2e50150736d581315af203bc6d51add4e8f17d
       },
       navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
     );
