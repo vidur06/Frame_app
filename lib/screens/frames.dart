@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_statements
+// ignore_for_file: unnecessary_statements, avoid_print
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -14,19 +14,30 @@ class Frames extends StatefulWidget {
 
 class _FramesState extends State<Frames> {
 
+  late InterstitialAd interstitialAd;
+  bool isLoaded = true;
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
+    InterstitialAd.load(
+      adUnitId: 'ca-app-pub-6380676578937457/8956369719',
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          setState(() {
+            isLoaded = true;
+            interstitialAd = ad;
+          });
+          print('ad loaded...');
+        },
+        onAdFailedToLoad: (error) {
+          print('Interstitial Ad failed...');
+        },
+      ),
+    );
   }
-  late InterstitialAd interstitialAd;
-  RewardedAd? rewardedAd;
-  bool isLoaded = true;
-  bool isRewarded = true;
-
 
   void interstitialAds() {
     InterstitialAd.load(
@@ -38,33 +49,10 @@ class _FramesState extends State<Frames> {
             isLoaded = true;
             interstitialAd = ad;
           });
-          // ignore: avoid_print
           print('ad loaded...');
         },
         onAdFailedToLoad: (error) {
-          // ignore: avoid_print
           print('Interstitial Ad failed...');
-        },
-      ),
-    );
-  }
-
-  void rewardedAds() {
-    RewardedAd.load(
-      adUnitId: 'ca-app-pub-6380676578937457/8194624838',
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          rewardedAd = ad;
-          setState(() {
-            isRewarded = true;
-          });
-          // ignore: avoid_print
-          print('ad reward');
-        },
-        onAdFailedToLoad: (error) {
-          // ignore: avoid_print
-          print('reward failed');
         },
       ),
     );
@@ -98,8 +86,6 @@ class _FramesState extends State<Frames> {
             elevation: 2,
             child: InkWell(
               onTap: () {
-                interstitialAds();
-
                 Navigator.of(context).pushNamed(
                   "framepage",
                   arguments: [
@@ -107,6 +93,10 @@ class _FramesState extends State<Frames> {
                     res[1][i],
                   ],
                 );
+                interstitialAds();
+                if (isLoaded) {
+                  interstitialAd.show();
+                }
               },
               child: Card(
                 child: Container(

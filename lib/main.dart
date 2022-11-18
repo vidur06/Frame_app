@@ -11,40 +11,27 @@ import 'package:festival_frame/screens/frameselect.dart';
 import 'package:festival_frame/screens/setimage.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 import 'screens/imagepage.dart';
 import 'screens/splashscreen.dart';
 
 void main() async {
-   WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   //   FirebaseCrashlytics.instance.crash();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   MobileAds.instance.initialize();
-
-  runApp(MyApp());
-  // ignore: unnecessary_statements
-  (error, stack) =>
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  
-}
-
-class MyApp extends StatelessWidget {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-   MyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    
-    return MaterialApp(
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: 'splashscreen',
       routes: {
+        "/": (context) => const MyHomePage(),
         "splashscreen": (context) => const SplashScreen(),
         "dashboard": (context) => const DashBoard(),
         "setimage": (context) => const SetImage(),
-        "/": (context) => const MyHomePage(),
         "framepage": (context) => const FramePage(),
         "select_frame": (context) => const SelectFrame(),
         "imagepage": (context) => const AlbumPage(),
@@ -54,8 +41,11 @@ class MyApp extends StatelessWidget {
         'ratepage': (contrxt) => const RatePage(),
       },
       navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
-    );
-  }
+    ),
+  );
+  // ignore: unnecessary_statements
+  (error, stack) =>
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
 }
 
 class MyHomePage extends StatefulWidget {

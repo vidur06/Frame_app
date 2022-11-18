@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:confetti/confetti.dart';
+import 'package:festival_frame/models/unit.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
@@ -8,18 +10,28 @@ class RatePage extends StatefulWidget {
   const RatePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _RatePageState createState() => _RatePageState();
 }
 
 class _RatePageState extends State<RatePage> {
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    navigatorObservers:
+    [FirebaseAnalyticsObserver(analytics: analytics)];
+  }
+
   bool isPlaying = false;
   final controller = ConfettiController();
-  var rating = 0.0;
+  double rating = 0.0;
 
   @override
   Widget build(BuildContext context) {
-    dynamic height = MediaQuery.of(context).size.height;
-    dynamic width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         Scaffold(
@@ -27,7 +39,7 @@ class _RatePageState extends State<RatePage> {
           body: Center(
             child: Container(
               alignment: Alignment.center,
-              height: height * 0.35,
+              height: height * 0.3,
               width: width * 0.85,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -43,10 +55,10 @@ class _RatePageState extends State<RatePage> {
                 children: [
                   SmoothStarRating(
                     rating: rating,
-                    size: 60,
+                    size: 50,
                     filledIconData: Icons.star,
-                    color: Colors.blue,
-                    borderColor: Colors.blueAccent,
+                    color: Colors.yellow,
+                    borderColor: Colors.black,
                     halfFilledIconData: Icons.star_half,
                     defaultIconData: Icons.star_border,
                     starCount: 5,
@@ -77,8 +89,6 @@ class _RatePageState extends State<RatePage> {
                           ),
                         ),
                         ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue),
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -114,7 +124,7 @@ class _RatePageState extends State<RatePage> {
                               },
                             );
                             controller.play();
-                            duration();
+                            Duration_Time.duration(context);
                           },
                           child: const Text('Done'),
                         ),
@@ -132,14 +142,14 @@ class _RatePageState extends State<RatePage> {
           blastDirectionality: BlastDirectionality.explosive,
           emissionFrequency: 0.02,
           numberOfParticles: 20,
-          minBlastForce: 10, 
+          minBlastForce: 10,
           maxBlastForce: 100,
         ),
       ],
     );
   }
 
-  duration(){
+  void duration() {
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     });

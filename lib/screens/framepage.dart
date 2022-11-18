@@ -1,7 +1,9 @@
-// ignore_for_file: unnecessary_statements
+// ignore_for_file: unnecessary_statements, avoid_print
 
 import 'dart:typed_data';
 
+import 'package:festival_frame/models/images.dart';
+import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
@@ -36,7 +38,7 @@ class _FramePageState extends State<FramePage> {
     super.initState();
     fetchdata = DBHelper.dbHelper.fetchAllData();
     checkDB();
-     navigatorObservers:
+    navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
@@ -53,15 +55,8 @@ class _FramePageState extends State<FramePage> {
   // ignore: non_constant_identifier_names
   List us_list = [];
   // ignore: non_constant_identifier_names
-  List s_list = [
-    "assets/images/navratri.png",
-    "assets/images/diwali.jpg",
-    "assets/images/rakhi.jpg",
-    "assets/images/mkr.jpg",
-    "assets/images/holi.png",
-    "assets/images/janmashtmi.jpg",
-    "assets/images/chrismas.jpg",
-  ];
+  List s_list = frameImage;
+  
   double _scale = 1.0;
   late double _previousScale;
   double yOffset = 400.0;
@@ -86,39 +81,6 @@ class _FramePageState extends State<FramePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Frame"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: () {
-              controller
-                  .capture(delay: const Duration(milliseconds: 10))
-                  .then((capturedImage) async {
-                ShowCapturedWidget(context, capturedImage!);
-
-                final Map<String, dynamic> data = {
-                  'image': capturedImage,
-                };
-                final Storage s = Storage.fromMap(data);
-                final int id = await DBHelper.dbHelper.insert(s);
-
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Record Insert Successfully With id = $id"),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-                setState(() {
-                  fetchdata = DBHelper.dbHelper.fetchAllData();
-                });
-                // final result = await ImageGallerySaver.saveImage(capturedImage);
-              }).catchError((onError) {
-                // ignore: avoid_print
-                print(onError);
-              });
-            },
-          ),
-        ],
         centerTitle: true,
       ),
       body: Column(
@@ -173,19 +135,16 @@ class _FramePageState extends State<FramePage> {
                                 top: offset.dy,
                                 child: GestureDetector(
                                   onScaleStart: (ScaleStartDetails details) {
-                                    // ignore: avoid_print
                                     print(details);
                                     _previousScale = _scale;
                                     setState(() {});
                                   },
                                   onScaleUpdate: (ScaleUpdateDetails details) {
-                                    // ignore: avoid_print
                                     print(details);
                                     _scale = _previousScale * details.scale;
                                     setState(() {});
                                   },
                                   onScaleEnd: (ScaleEndDetails details) {
-                                    // ignore: avoid_print
                                     print(details);
                                     _previousScale = 1.0;
                                     setState(() {});
@@ -240,15 +199,7 @@ class _FramePageState extends State<FramePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  controller
-                      .capture(delay: const Duration(milliseconds: 10))
-                      .then((capturedImage) async {
-                    Navigator.of(context)
-                        .pushNamed("sticker", arguments: capturedImage);
-                  }).catchError((onError) {
-                    // ignore: avoid_print
-                    print(onError);
-                  });
+                  ScreenCapture.capturedNav(controller, context);
                 },
                 child: const Text("sticker"),
               ),

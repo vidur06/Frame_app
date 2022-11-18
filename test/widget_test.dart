@@ -1,26 +1,24 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_core/firebase_core.dart';
 
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:confetti/confetti.dart';
 import 'package:festival_frame/models/model.dart';
 import 'package:festival_frame/models/sqlhelper.dart';
-import 'package:festival_frame/screens/allscreen.dart';
-import 'package:festival_frame/screens/final.dart';
+import 'package:festival_frame/models/unit.dart';
 import 'package:festival_frame/screens/framepage.dart';
-import 'package:festival_frame/screens/frameselect.dart';
 import 'package:festival_frame/screens/imagepage.dart';
-import 'package:festival_frame/screens/splashscreen.dart';
+import 'package:festival_frame/screens/ratepage.dart';
 import 'package:festival_frame/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:festival_frame/main.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 import 'package:stick_it/stick_it.dart';
 
-void main() {
+void main() async {
   group("Splash screen", () {
     testWidgets('find image', (tester) async {
       final childWidget = find.byKey(const ValueKey("image"));
@@ -866,87 +864,162 @@ void main() {
     });
   });
 
-  group("select frame", () {
-    testWidgets('find all widget', (tester) async {
+  group('sticker page', () {
+    testWidgets('Sticker Screen Testing', (tester) async {
+      StickIt _stickIt = StickIt(
+        stickerList: [
+          Image.asset("assets/sticker/s1.png"),
+          Image.asset("assets/sticker/s2.png"),
+          Image.asset("assets/sticker/s3.png"),
+          Image.asset("assets/sticker/s4.png"),
+          Image.asset("assets/sticker/s5.png"),
+          Image.asset("assets/sticker/s6.png"),
+          Image.asset("assets/sticker/s7.png"),
+          Image.asset("assets/sticker/s8.png"),
+          Image.asset("assets/sticker/s9.png"),
+          Image.asset("assets/sticker/s10.png"),
+          Image.asset("assets/sticker/s11.png"),
+          Image.asset("assets/sticker/s12.png"),
+          Image.asset("assets/sticker/s13.png"),
+          Image.asset("assets/sticker/s14.png"),
+          Image.asset("assets/sticker/s15.png"),
+          Image.asset("assets/sticker/s16.png"),
+          Image.asset("assets/sticker/s17.png"),
+          Image.asset("assets/sticker/s18.png"),
+          Image.asset("assets/sticker/s19.png"),
+          Image.asset("assets/sticker/s20.png"),
+          Image.asset("assets/sticker/s21.png"),
+          Image.asset("assets/sticker/s22.png"),
+          Image.asset("assets/sticker/s23.png"),
+        ],
+        child: Container(),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: _stickIt,
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.byWidget(_stickIt), findsWidgets);
+    });
+  });
+  group('rate page', () {
+    testWidgets('find widgets', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: SelectFrame(),
+          home: RatePage(),
         ),
       );
       await tester.pump();
-      final text = find.byType(
-        Text,
-      );
-      final column = find.byType(
-        Column,
-      );
-      final sizedbox = find.byType(SizedBox);
-      final expanded = find.byType(Expanded);
-      final gesture = find.byType(GestureDetector);
-      final stack = find.byType(Stack);
+      final text = find.byType(Text);
+      final center = find.byType(Center);
+      final container = find.byType(Container);
+      final column = find.byType(Column);
+      final rating = find.byType(SmoothStarRating);
+      final padding = find.byType(Padding);
+      final row = find.byType(Row);
+      final textbutton = find.byType(TextButton);
+      final confettiWidget = find.byType(ConfettiWidget);
 
       expect(text, findsWidgets);
+      expect(center, findsWidgets);
+      expect(container, findsWidgets);
       expect(column, findsWidgets);
-      expect(sizedbox, findsWidgets);
-      expect(expanded, findsWidgets);
-      expect(gesture, findsWidgets);
-      expect(stack, findsWidgets);
+      expect(rating, findsWidgets);
+      expect(padding, findsWidgets);
+      expect(row, findsWidgets);
+      expect(confettiWidget, findsWidgets);
     });
   });
 
-  group('sticker page', () {
-    testWidgets('Sticker Screen Testing', (tester) async {
-      StickIt _stickIt = StickIt(
+  group("dash board page", () {
+    test("image pick", () {
+      var result = Imagepick.imagepic();
+      expect(result, isInstanceOf());
+    });
+
+    test("Select_Frame navigation", () {
+      build(BuildContext context) {
+        var result = Navigation.Select_Frame(context);
+        expect(result, "success");
+      }
+    });
+
+    test("imagepage navigation", () {
+      build(BuildContext context) {
+        var result = Navigation.ImagePage(context);
+        expect(result, "success");
+      }
+    });
+
+    test("ratepage navigation", () {
+      build(BuildContext context) {
+        var result = Navigation.Ratepage(context);
+        expect(result, "success");
+      }
+    });
+  });
+
+  group("setting page", () {
+    test("capture", () {
+      build(BuildContext context) {
+        final controller = ScreenshotController();
+        var result = ScreenCapture.Capture(context, controller);
+        expect(result, "captured success");
+      }
+    });
+  });
+
+  group("final page", () {
+    test("Store data in db", () {
+      final StickIt _stickIt;
+
+      _stickIt = StickIt(
         stickerList: [
           Image.asset("assets/sticker/s1.png"),
           Image.asset("assets/sticker/s2.png"),
           Image.asset("assets/sticker/s3.png"),
-          Image.asset("assets/sticker/s4.png"),
+          Image.asset("assets1/sticker/s4.png"),
           Image.asset("assets/sticker/s5.png"),
           Image.asset("assets/sticker/s6.png"),
           Image.asset("assets/sticker/s7.png"),
           Image.asset("assets/sticker/s8.png"),
           Image.asset("assets/sticker/s9.png"),
         ],
-        child: Container(),
-      );
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: _stickIt,
-          ),
+        child: Container(
+          color: Colors.white,
+          child: Image.asset("assets/sticker/s9.png"),
         ),
       );
-      await tester.pump();
-      expect(find.byWidget(_stickIt), findsWidgets);
+      build(BuildContext context) {
+        final image = _stickIt.exportImage();
+        late Future<List<Storage>> fetchdata;
+        fetchdata = DBHelper.dbHelper.fetchAllData();
+
+        var result = SaveDB.Store(context, image, fetchdata);
+        expect(result, "Store Sucessfully");
+      }
     });
   });
 
-  group('sticker page', () {
-    testWidgets('Sticker Screen Testing', (tester) async {
-      StickIt _stickIt = StickIt(
-        stickerList: [
-          Image.asset("assets/sticker/s1.png"),
-          Image.asset("assets/sticker/s2.png"),
-          Image.asset("assets/sticker/s3.png"),
-          Image.asset("assets/sticker/s4.png"),
-          Image.asset("assets/sticker/s5.png"),
-          Image.asset("assets/sticker/s6.png"),
-          Image.asset("assets/sticker/s7.png"),
-          Image.asset("assets/sticker/s8.png"),
-          Image.asset("assets/sticker/s9.png"),
-        ],
-        child: Container(),
-      );
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: _stickIt,
-          ),
-        ),
-      );
-      await tester.pump();
-      expect(find.byWidget(_stickIt), findsWidgets);
+  group("frame set page", () {
+    test("save image with frame", () {
+      final controller = ScreenshotController();
+      build(BuildContext context) {
+        var result = ScreenCapture.capturedNav(controller, context);
+        expect(result, "success");
+      }
+    });
+  });
+
+  group("album page", () {
+    test("delete from db", () {
+      build(BuildContext context) {
+        final result = DeleteDB.Deletedb(data[i]);
+        expect(result, "success");
+      }
     });
   });
 }
