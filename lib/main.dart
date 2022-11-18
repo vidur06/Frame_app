@@ -4,7 +4,6 @@ import 'package:festival_frame/screens/ratepage.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
 import 'package:flutter/material.dart';
 import 'package:festival_frame/screens/allscreen.dart';
 import 'package:festival_frame/screens/framepage.dart';
@@ -12,7 +11,6 @@ import 'package:festival_frame/screens/frameselect.dart';
 import 'package:festival_frame/screens/setimage.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 import 'screens/imagepage.dart';
 import 'screens/splashscreen.dart';
 
@@ -28,12 +26,12 @@ void main() async {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'demo',
+      initialRoute: 'splashscreen',
       routes: {
+        "/": (context) => const MyHomePage(),
         "splashscreen": (context) => const SplashScreen(),
         "dashboard": (context) => const DashBoard(),
         "setimage": (context) => const SetImage(),
-        "/": (context) => const MyHomePage(),
         "framepage": (context) => const FramePage(),
         "select_frame": (context) => const SelectFrame(),
         "imagepage": (context) => const AlbumPage(),

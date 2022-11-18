@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:screenshot/screenshot.dart';
 
+import '../models/images.dart';
 import '../models/unit.dart';
 import '../widgets/widgets.dart';
 
@@ -24,88 +25,23 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   List image = [
-    "assets/images/ad1.jpg",
-    "assets/images/ad2.jpg",
+    "assets/images/ad1.png",
+    "assets/images/ad2.png",
     "assets/images/ad3.jpg",
+    "assets/images/ad4.jpg",
+    "assets/images/ad5.jpg",
+    "assets/images/ad6.jpg",
+    "assets/images/ad7.jpg",
+    "assets/images/ad8.jpg",
+    "assets/images/ad9.jpg",
+    "assets/images/ad10.jpg",
+    "assets/images/ad11.jpg",
   ];
 
-  List frames = [
-    "assets/images/navratri.png",
-    "assets/images/diwali.jpg",
-    "assets/images/rakhi.jpg",
-    "assets/images/mkr.jpg",
-    "assets/images/holi.png",
-    "assets/images/janmashtmi.jpg",
-    "assets/images/chrismas.jpg",
-  ];
-  List allframe = [
-    //navratri :-
-    [
-      "assets/images/n1.png",
-      "assets/images/n2.png",
-      "assets/images/n3.png",
-      "assets/images/n4.png",
-      "assets/images/n5.png",
-      "assets/images/n6.png",
-      "assets/images/n7.png",
-    ],
-    //diwali :-
-    [
-      "assets/images/d1.png",
-      "assets/images/d2.png",
-      "assets/images/d3.png",
-      "assets/images/d4.png",
-      "assets/images/d5.png",
-    ],
-    //rakhi:-
-    [
-      "assets/images/r1.png",
-      "assets/images/r2.png",
-      "assets/images/r3.png",
-      "assets/images/r4.png",
-    ],
-    //Makar Sankranti:-
-    [
-      "assets/images/m1.png",
-      "assets/images/m2.png",
-      "assets/images/m3.png",
-      "assets/images/m5.png",
-    ],
-    //holi:-
-    [
-      "assets/images/h1.png",
-      "assets/images/h2.png",
-      "assets/images/h3.png",
-      "assets/images/h4.png",
-      "assets/images/h5.png",
-    ],
-    //janmastmi:-
-    [
-      "assets/images/j1.png",
-      "assets/images/j2.png",
-      "assets/images/j3.png",
-      "assets/images/j4.png",
-      "assets/images/j5.png",
-    ],
-    //chrishmas:-
-    [
-      "assets/images/c1.png",
-      "assets/images/c2.png",
-      "assets/images/c3.png",
-      "assets/images/c4.png",
-      "assets/images/c5.png",
-    ],
-  ];
+  List frames = frameImage;
+  List allframe = allFrameImage;
 
-  List name = [
-    "Navratri",
-    "Diwali",
-    "Rakhi",
-    "Makar Sankranti",
-    "Holi",
-    "Janmashtmi",
-    "marry Chrishmas"
-  ];
+  List name = festivleName;
 
   @override
   void initState() {
@@ -122,15 +58,7 @@ class _DashBoardState extends State<DashBoard> {
   List items = [];
 
   String userImage = "";
-  List<String> drawer = [
-    "Navratri",
-    "Diwali",
-    "Rakhi",
-    "Makar Sankranti",
-    "Holi",
-    "Janmashtmi",
-    "marry Chrishmas",
-  ];
+  List<String> drawer = festivleName;
 
   void filterSearchResults(String query) {
     final List<String> dummySearchList = [];
@@ -509,7 +437,7 @@ class _SettingState extends State<Setting> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blueAccent,
+                      backgroundColor: Colors.blueAccent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32.0),
                       ),

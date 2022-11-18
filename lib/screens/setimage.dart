@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_statements
+// ignore_for_file: unnecessary_statements, avoid_print
 
 import 'dart:io';
 
@@ -17,7 +17,6 @@ class _SetImageState extends State<SetImage> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
@@ -99,11 +98,9 @@ class _SetImageState extends State<SetImage> {
     if (croppedfile != null) {
       imagefile = File(croppedfile.path);
       setState(() {
-        // ignore: avoid_print
         print(imagefile);
       });
     } else {
-      // ignore: avoid_print
       print("Image is not cropped.");
     }
   }

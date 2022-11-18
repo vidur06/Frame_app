@@ -7,6 +7,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../models/images.dart';
+
 class SelectFrame extends StatefulWidget {
   const SelectFrame({Key? key}) : super(key: key);
 
@@ -18,98 +20,16 @@ class _SelectFrameState extends State<SelectFrame> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
-  List frames = [
-    "assets/images/navratri.png",
-    "assets/images/diwali.jpg",
-    "assets/images/rakhi.jpg",
-    "assets/images/mkr.jpg",
-    "assets/images/holi.png",
-    "assets/images/janmashtmi.jpg",
-    "assets/images/chrismas.jpg",
-  ];
-  List allframe = [
-    //navratri :-
-    [
-      "assets/images/n1.png",
-      "assets/images/n2.png",
-      "assets/images/n3.png",
-      "assets/images/n4.png",
-      "assets/images/n5.png",
-      "assets/images/n6.png",
-      "assets/images/n7.png",
-    ],
-    //diwali :-
-    [
-      "assets/images/d1.png",
-      "assets/images/d2.png",
-      "assets/images/d3.png",
-      "assets/images/d4.png",
-      "assets/images/d5.png",
-    ],
-    //rakhi:-
-    [
-      "assets/images/r1.png",
-      "assets/images/r2.png",
-      "assets/images/r3.png",
-      "assets/images/r4.png",
-    ],
-    //Makar Sankranti:-
-    [
-      "assets/images/m1.png",
-      "assets/images/m2.png",
-      "assets/images/m3.png",
-      "assets/images/m5.png",
-    ],
-    //holi:-
-    [
-      "assets/images/h1.png",
-      "assets/images/h2.png",
-      "assets/images/h3.png",
-      "assets/images/h4.png",
-      "assets/images/h5.png",
-    ],
-    //janmastmi:-
-    [
-      "assets/images/j1.png",
-      "assets/images/j2.png",
-      "assets/images/j3.png",
-      "assets/images/j4.png",
-      "assets/images/j5.png",
-    ],
-    //chrishmas:-
-    [
-      "assets/images/c1.png",
-      "assets/images/c2.png",
-      "assets/images/c3.png",
-      "assets/images/c4.png",
-      "assets/images/c5.png",
-    ],
-  ];
-
-  List name = [
-    "Navratri",
-    "Diwali",
-    "Rakhi",
-    "Makar Sankranti",
-    "Holi",
-    "Janmashtmi",
-    "marry Chrishmas"
-  ];
-  List colors = const [
-    Color.fromARGB(255, 208, 197, 206),
-    Color.fromARGB(255, 208, 197, 206),
-    Color.fromARGB(255, 208, 197, 206),
-    Color.fromARGB(255, 208, 197, 206),
-    Color.fromARGB(255, 208, 197, 206),
-    Color.fromARGB(255, 208, 197, 206),
-    Color.fromARGB(255, 208, 197, 206),
-  ];
+  List frames = frameImage;
+  List allframe = allFrameImage;
+  List name = festivleName;
+  List colors = imageColors;
+  
   final picker = ImagePicker();
 
   @override
@@ -151,7 +71,7 @@ class _SelectFrameState extends State<SelectFrame> {
                         alignment: Alignment.center,
                         children: [
                           Container(
-                            height: 170,
+                            height: 154,
                             width: 170,
                             color: colors[i],
                           ),

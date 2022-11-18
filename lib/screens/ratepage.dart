@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:confetti/confetti.dart';
 import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_star_rating_null_safety/smooth_star_rating_null_safety.dart';
 
@@ -40,7 +39,7 @@ class _RatePageState extends State<RatePage> {
           body: Center(
             child: Container(
               alignment: Alignment.center,
-              height: height * 0.35,
+              height: height * 0.3,
               width: width * 0.85,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -56,7 +55,7 @@ class _RatePageState extends State<RatePage> {
                 children: [
                   SmoothStarRating(
                     rating: rating,
-                    size: 60,
+                    size: 50,
                     filledIconData: Icons.star,
                     color: Colors.yellow,
                     borderColor: Colors.black,

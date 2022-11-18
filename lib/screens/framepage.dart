@@ -1,7 +1,8 @@
-// ignore_for_file: unnecessary_statements
+// ignore_for_file: unnecessary_statements, avoid_print
 
 import 'dart:typed_data';
 
+import 'package:festival_frame/models/images.dart';
 import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -54,15 +55,8 @@ class _FramePageState extends State<FramePage> {
   // ignore: non_constant_identifier_names
   List us_list = [];
   // ignore: non_constant_identifier_names
-  List s_list = [
-    "assets/images/navratri.png",
-    "assets/images/diwali.jpg",
-    "assets/images/rakhi.jpg",
-    "assets/images/mkr.jpg",
-    "assets/images/holi.png",
-    "assets/images/janmashtmi.jpg",
-    "assets/images/chrismas.jpg",
-  ];
+  List s_list = frameImage;
+  
   double _scale = 1.0;
   late double _previousScale;
   double yOffset = 400.0;
@@ -141,19 +135,16 @@ class _FramePageState extends State<FramePage> {
                                 top: offset.dy,
                                 child: GestureDetector(
                                   onScaleStart: (ScaleStartDetails details) {
-                                    // ignore: avoid_print
                                     print(details);
                                     _previousScale = _scale;
                                     setState(() {});
                                   },
                                   onScaleUpdate: (ScaleUpdateDetails details) {
-                                    // ignore: avoid_print
                                     print(details);
                                     _scale = _previousScale * details.scale;
                                     setState(() {});
                                   },
                                   onScaleEnd: (ScaleEndDetails details) {
-                                    // ignore: avoid_print
                                     print(details);
                                     _previousScale = 1.0;
                                     setState(() {});

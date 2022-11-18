@@ -42,6 +42,15 @@ class _AlbumPageState extends State<AlbumPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color.fromRGBO(0, 0, 0, 1),
+          ),
+        ),
         title: const Text(
           "Storage",
           style: TextStyle(
