@@ -60,6 +60,9 @@ dependencies:
   share_plus: ^4.5.3
   confetti: ^0.7.0
   smooth_star_rating_null_safety: ^1.0.4+2
+  motion_tab_bar_v2: ^0.2.6
+  widgets_to_image: ^0.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -118,3 +121,4 @@ flutter:
   assets:
     - assets/images/
     - assets/sticker/
+    - assets/iconImage/
