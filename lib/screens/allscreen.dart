@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:festival_frame/models/frame_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -38,10 +39,8 @@ class _DashBoardState extends State<DashBoard> {
     "assets/images/ad11.jpg",
   ];
 
-  List frames = frameImage;
-  List allframe = allFrameImage;
-
-  List name = festivleName;
+  List framesImage = fImage;
+  List iconImage = icons;
 
   @override
   void initState() {
@@ -105,7 +104,7 @@ class _DashBoardState extends State<DashBoard> {
         drawer: Opacity(
           opacity: 0.95,
           child: Drawer(
-            backgroundColor: Colors.grey[200],
+            backgroundColor: Colors.white,
             child: Column(
               children: [
                 const Padding(
@@ -113,9 +112,9 @@ class _DashBoardState extends State<DashBoard> {
                   child: Text(
                     "Festivals",
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 18,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -137,7 +136,9 @@ class _DashBoardState extends State<DashBoard> {
                         horizontal: 10.0,
                       ),
                       hintText: "Search",
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: Icon(
+                        Icons.search,
+                      ),
                     ),
                   ),
                 ),
@@ -145,49 +146,54 @@ class _DashBoardState extends State<DashBoard> {
                   child: ListView.builder(
                     itemCount: items.length,
                     itemBuilder: (context, i) {
-                      return InkWell(
-                        onTap: () async {
-                          final pickedFile = await Imagepick.imagepic();
-                          // ignore: unnecessary_null_comparison
-                          if (pickedFile.path != null) {
-                            // ignore: use_build_context_synchronously
-                            Navigator.of(context).pushNamed(
-                              "setimage",
-                              arguments: [
-                                File(pickedFile.path),
-                                allframe[i],
-                              ],
-                            );
-                          }
-                        },
-                        child: ListTile(
-                          shape: (i == 0)
-                              ? Border(
-                                  top: BorderSide(
-                                    color: Colors.grey.shade400,
-                                    width: 1.5,
-                                  ),
-                                  bottom: BorderSide(
-                                    color: Colors.grey.shade400,
-                                    width: 1.5,
-                                  ),
-                                )
-                              : Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey.shade400,
-                                    width: 1.5,
-                                  ),
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            child: ListTile(
+                              onTap: () async {
+                                var argument;
+                                print('items[i] : ${items[i]}');
+                                framesImage.forEach((e) {
+                                  (e.name == items[i])
+                                      ? argument = e.list
+                                      : argument;
+                                  // print('e.name: ${e.list}');
+                                });
+                                print('argument: $argument');
+                                //   final pickedFile = await Imagepick.imagepic();
+                                // if (pickedFile.path != null) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pushNamed(
+                                  "frames",
+                                  arguments: argument,
+                                );
+                              },
+                              title: Text(
+                                items[i],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                          title: Text(
-                            items[i],
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                              ),
+                              leading: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: Image(
+                                  image: AssetImage(iconImage[i]),
+                                ),
+                              ),
+                              minVerticalPadding: 20,
+                              style: ListTileStyle.list,
                             ),
                           ),
-                          minVerticalPadding: 20,
-                          style: ListTileStyle.list,
-                        ),
+                          const Divider(
+                            color: Colors.grey,
+                            thickness: 0.8,
+                            indent: 4,
+                            endIndent: 4,
+                          ),
+                        ],
                       );
                     },
                   ),

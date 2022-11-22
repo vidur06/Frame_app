@@ -10,13 +10,13 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../models/unit.dart';
 
-class Frames extends StatefulWidget {
-  const Frames({Key? key}) : super(key: key);
+class ReFrames extends StatefulWidget {
+  const ReFrames({Key? key}) : super(key: key);
   @override
-  State<Frames> createState() => _FramesState();
+  State<ReFrames> createState() => _ReFramesState();
 }
 
-class _FramesState extends State<Frames> {
+class _ReFramesState extends State<ReFrames> {
   late InterstitialAd interstitialAd;
   bool isLoaded = true;
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -74,7 +74,7 @@ class _FramesState extends State<Frames> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushNamedAndRemoveUntil('select_frame', (route) => false);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -83,21 +83,16 @@ class _FramesState extends State<Frames> {
       ),
       body: StaggeredGridView.countBuilder(
         crossAxisCount: 3,
-        itemCount: res.length,
+        itemCount: res[1].length,
         itemBuilder: (context, i) {
           return Card(
             elevation: 2,
             child: InkWell(
               onTap: () async {
-                final pickedFile = await Imagepick.imagepic();
-                // ignore: unnecessary_null_comparison
-                if (pickedFile.path != null) {
-                  Navigator.of(context).pushNamed("setimage", arguments: [
-                    File(pickedFile.path),
-                    res[i],
-                    res,
+                  Navigator.of(context).pushNamed("framepage", arguments: [
+                    res[0],
+                    res[1][i],
                   ]);
-                }
                 interstitialAds();
                 if (isLoaded) {
                   interstitialAd.show();
@@ -108,7 +103,7 @@ class _FramesState extends State<Frames> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
-                        res[i],
+                        res[1][i],
                       ),
                       fit: BoxFit.fill,
                     ),

@@ -44,35 +44,37 @@ class _FramePageState extends State<FramePage> {
 
   PhotoViewController controller1 = PhotoViewController();
   final controller = ScreenshotController();
-  String frame = "";
-  double top = 0;
-  double left = 0;
-  List<String> store = [];
-  List<String> list = [];
-  bool frm = true;
-  bool stk = false;
-  String sticker = "";
+  // String frame = "";
+  // double top = 0;
+  // double left = 0;
+  // List<String> store = [];
+  // List<String> list = [];
+  // bool frm = true;
+  // bool stk = false;
   // ignore: non_constant_identifier_names
-  List us_list = [];
+  // List us_list = [];
   // ignore: non_constant_identifier_names
-  List s_list = frameImage;
-  
-  double _scale = 1.0;
-  late double _previousScale;
-  double yOffset = 400.0;
-  double xOffset = 50.0;
-  double rotation = 0.0;
-  double lastRotation = 0.0;
-  double finalAngle = 0.0;
-  double oldAngle = 0.0;
-  double upsetAngle = 0.0;
+  // List s_list = frameImage;
 
-  Offset offset = Offset.zero;
+  // double _scale = 1.0;
+  // late double _previousScale;
+  // double yOffset = 400.0;
+  // double xOffset = 50.0;
+  // double rotation = 0.0;
+  // double lastRotation = 0.0;
+  // double finalAngle = 0.0;
+  // double oldAngle = 0.0;
+  // double upsetAngle = 0.0;
 
-  Offset centerOfGestureDetector = Offset(ballRadius, ballRadius);
+  // Offset offset = Offset.zero;
 
-  double height = 30;
-  double width = 30;
+  // final transController = TransformationController();
+  // TapDownDetails? doubleTapDetails;
+
+  // Offset centerOfGestureDetector = Offset(ballRadius, ballRadius);
+
+  // double height = 30;
+  // double width = 30;
 
   @override
   Widget build(BuildContext context) {
@@ -83,98 +85,165 @@ class _FramePageState extends State<FramePage> {
         title: const Text("Add Frame"),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Stack(
+        alignment: Alignment.topCenter,
         children: [
           res[0] != null
               ? Container(
                   // height: 300,
-                  margin: const EdgeInsets.all(2),
+                  // margin: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     // color: Colors.red,
-                    border: Border.all(width: 3),
+                    // border: Border.all(width: 3),
                   ),
                   child: Screenshot(
                     controller: controller,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox(
-                          child: Transform(
-                            transform: Matrix4.rotationZ(0),
-                            alignment: FractionalOffset.center,
-                            child: SizedBox(
-                              height: 370,
-                              width: 333,
-                              child: InteractiveViewer(
-                                child: Image.file(
-                                  res[0],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        IgnorePointer(
-                          child: Container(
-                            margin: const EdgeInsets.all(10),
-                            height: 400,
-                            width: 400,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(res[1]),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        (sticker.isNotEmpty)
-                            ? Positioned(
-                                left: offset.dx,
-                                top: offset.dy,
-                                child: GestureDetector(
-                                  onScaleStart: (ScaleStartDetails details) {
-                                    print(details);
-                                    _previousScale = _scale;
-                                    setState(() {});
-                                  },
-                                  onScaleUpdate: (ScaleUpdateDetails details) {
-                                    print(details);
-                                    _scale = _previousScale * details.scale;
-                                    setState(() {});
-                                  },
-                                  onScaleEnd: (ScaleEndDetails details) {
-                                    print(details);
-                                    _previousScale = 1.0;
-                                    setState(() {});
-                                  },
-                                  child: RotatedBox(
-                                    quarterTurns: rotation.toInt(),
-                                    child: Transform(
-                                      alignment: FractionalOffset.center,
-                                      transform: Matrix4.diagonal3(
-                                        Vector3(_scale, _scale, _scale),
-                                      ),
-                                      child: Image(
-                                        image: AssetImage(sticker),
-                                      ),
-                                    ),
+                    child: Container(
+                      height: 400,
+                      width: double.infinity,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Positioned(
+                          //   left: offset.dx,
+                          //   top: offset.dy,
+                          //   child: GestureDetector(
+                              // onScaleStart: (ScaleStartDetails details) {
+                              //   print(details);
+                              //   _previousScale = _scale;
+                              //   setState(() {});
+                              // },
+                              // onScaleUpdate: (ScaleUpdateDetails details) {
+                              //         print(details);
+                              //         _scale = _previousScale * details.scale;
+                              //         setState(() {});
+                              //       },
+                              // onPanUpdate: (details) {
+                              //   print(details);
+                              //   // _scale = _previousScale * details.scale;
+                              //   setState(() {
+                              //     offset = Offset(
+                              //       offset.dx + details.delta.dx,
+                              //       offset.dy + details.delta.dy,
+                              //     );
+                              //   });
+                              // },
+                              // onScaleEnd: (ScaleEndDetails details) {
+                              //   print(details);
+                              //   _previousScale = 1.0;
+                              //   setState(() {});
+                              // },
+                              // child: 
+                              // RotatedBox(
+                              //   quarterTurns: rotation.toInt(),
+                                // child: Transform(
+                                //   alignment: FractionalOffset.center,
+                                //   transform: Matrix4.diagonal3(
+                                //     Vector3(_scale, _scale, _scale),
+                                //   ),
+                                  PhotoView(
+                                    enablePanAlways: true,
+                                    enableRotation: true,
+                                  
+                                    // child: Image(
+                                  
+                                      imageProvider: FileImage(res[0]),
+                                    // ),
                                   ),
-                                  onVerticalDragUpdate: (DragUpdateDetails dd) {
-                                    setState(() {
-                                      offset = Offset(
-                                        offset.dx + dd.delta.dx,
-                                        offset.dy + dd.delta.dy,
-                                      );
-                                    });
-                                  },
+                              //   ),
+                              // ),
+                              // onVerticalDragUpdate: (DragUpdateDetails dd) {
+                              //   setState(() {
+                              //     offset = Offset(
+                              //       offset.dx + dd.delta.dx,
+                              //       offset.dy + dd.delta.dy,
+                              //     );
+                              //   });
+                              // },
+                              // onHorizontalDragUpdate: (DragUpdateDetails dd) {
+                              //   setState(() {
+                              //     offset = Offset(
+                              //       offset.dy + dd.delta.dy,
+                              //       offset.dx + dd.delta.dx,
+                              //     );
+                              //   });
+                              // },
+                            // ),
+                          // ),
+                          // SizedBox(
+                          //   child: Transform(
+                          //     transform: Matrix4.rotationZ(0),
+                          //     alignment: FractionalOffset.center,
+                          //     child: SizedBox(
+                          //       height: 370,
+                          //       width: 333,
+                          //       child: InteractiveViewer(
+                          //         child: Image.file(
+                          //           res[0],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+
+                          IgnorePointer(
+                            child: 
+                            Container(
+                              // margin: const EdgeInsets.all(10),
+                              height: 400,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(res[1]),
+                                  fit: BoxFit.fill,
                                 ),
-                              )
-                            : Container(),
-                        // )
-                        // .toList()),
-                      ],
+                              ),
+                            ),
+                          ),
+
+                          // Positioned(
+                          //         left: offset.dx,
+                          //         top: offset.dy,
+                          //         child: GestureDetector(
+                          //           onScaleStart: (ScaleStartDetails details) {
+                          //             print(details);
+                          //             _previousScale = _scale;
+                          //             setState(() {});
+                          //           },
+                                    // onScaleUpdate: (ScaleUpdateDetails details) {
+                                    //   print(details);
+                                    //   _scale = _previousScale * details.scale;
+                                    //   setState(() {});
+                                    // },
+                          //           onScaleEnd: (ScaleEndDetails details) {
+                          //             print(details);
+                          //             _previousScale = 1.0;
+                          //             setState(() {});
+                          //           },
+                          //           child: RotatedBox(
+                          //             quarterTurns: rotation.toInt(),
+                          //             child: Transform(
+                          //               alignment: FractionalOffset.center,
+                          //               transform: Matrix4.diagonal3(
+                          //                 Vector3(_scale, _scale, _scale),
+                          //               ),
+                          //               child: Image(
+                          //                 image: AssetImage(sticker),
+                          //               ),
+                          //             ),
+                          //           ),
+                          //           onVerticalDragUpdate: (DragUpdateDetails dd) {
+                          //             setState(() {
+                          //               offset = Offset(
+                          //                 offset.dx + dd.delta.dx,
+                          //                 offset.dy + dd.delta.dy,
+                          //               );
+                          //             });
+                          //           },
+                          //         ),
+                          //       ),
+                        ],
+                      ),
                     ),
                   ),
                 )
@@ -188,22 +257,36 @@ class _FramePageState extends State<FramePage> {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("frame"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  ScreenCapture.capturedNav(controller, context);
-                },
-                child: const Text("sticker"),
-              ),
-            ],
+          IgnorePointer(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top:400),
+                        child: Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+          Padding(
+            padding: const EdgeInsets.only(top: 600),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed('re_frames', arguments: [res[0], res[2]]);
+                  },
+                  child: const Text("frame"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    ScreenCapture.capturedNav(controller, context);
+                  },
+                  child: const Text("sticker"),
+                ),
+              ],
+            ),
           )
         ],
       ),

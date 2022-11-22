@@ -57,10 +57,11 @@ class _SetImageState extends State<SetImage> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(
-                      "frames",
+                      "framepage",
                       arguments: [
                         (imagefile != null) ? imagefile : res[0],
-                        res[1]
+                        res[1],
+                        res[2],
                       ],
                     );
                   },

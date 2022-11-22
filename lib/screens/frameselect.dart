@@ -26,10 +26,10 @@ class _SelectFrameState extends State<SelectFrame> {
   }
 
   List frames = frameImage;
-  List allframe = allFrameImage;
+  List allframe = fImage;
   List name = festivleName;
   List colors = imageColors;
-  
+
   final picker = ImagePicker();
 
   @override
@@ -38,6 +38,15 @@ class _SelectFrameState extends State<SelectFrame> {
       appBar: AppBar(
         title: const Text("Select Frame"),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (route) => false);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -52,18 +61,14 @@ class _SelectFrameState extends State<SelectFrame> {
               children: List.generate(frames.length, (i) {
                 return GestureDetector(
                   onTap: () async {
-                    final pickedFile = await Imagepick.imagepic();
-                    // ignore: unnecessary_null_comparison
-                    if (pickedFile.path != null) {
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pushNamed(
-                        "setimage",
-                        arguments: [
-                          File(pickedFile.path),
-                          allframe[i],
-                        ],
-                      );
-                    }
+                    var argument;
+                    allframe.forEach((e) {
+                      (e.name == name[i]) ? argument = e.list : argument;
+                    });
+                    Navigator.of(context).pushNamed(
+                      "frames",
+                      arguments: argument,
+                    );
                   },
                   child: Column(
                     children: [
