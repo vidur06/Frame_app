@@ -32,6 +32,18 @@ class _SetImageState extends State<SetImage> {
           "Set Image",
         ),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).restorablePushNamedAndRemoveUntil(
+              'frames',
+              (route) => false,
+              arguments: res[2],
+            );
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

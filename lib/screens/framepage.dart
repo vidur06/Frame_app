@@ -1,317 +1,397 @@
-// ignore_for_file: unnecessary_statements, avoid_print
+// ignore_for_file: unnecessary_statements, avoid_print, sized_box_for_whitespace
 
 import 'dart:typed_data';
 
-import 'package:festival_frame/models/images.dart';
 import 'package:festival_frame/models/unit.dart';
+import 'package:festival_frame/text_edit/component_layer.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:screenshot/screenshot.dart';
-// ignore: depend_on_referenced_packages
-import 'package:vector_math/vector_math_64.dart' show Vector3;
-
 import '../models/model.dart';
 import '../models/sqlhelper.dart';
+import '../text_edit/add_text_layout.dart';
+import '../text_edit/confirmation_dialog.dart';
+import '../text_edit/dragable_widget.dart';
+import '../text_edit/dragable_widget_child.dart';
+import '../text_edit/edit_photo_cubit.dart';
 
-double ballRadius = 7.5;
-
-class FramePage extends StatefulWidget {
-  const FramePage({Key? key}) : super(key: key);
+// double ballRadius = 7.5;
+class FramePage extends StatelessWidget {
+  const FramePage({super.key});
 
   @override
-  State<FramePage> createState() => _FramePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => EditPhotoCubit(),
+      child: const PhotoFramePage(),
+    );
+  }
+}
+
+class PhotoFramePage extends StatefulWidget {
+  const PhotoFramePage({Key? key}) : super(key: key);
+
+  @override
+  State<PhotoFramePage> createState() => _PhotoFramePageState();
 }
 
 List<Uint8List> data = [];
 int i = 0;
 
-class _FramePageState extends State<FramePage> {
+class _PhotoFramePageState extends State<PhotoFramePage> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  late Future<List<Storage>> fetchdata;
-  Future<void> checkDB() async {
-    await DBHelper.dbHelper.initDB();
-  }
+  // late Future<List<Storage>> fetchdata;
+  // Future<void> checkDB() async {
+  //   await DBHelper.dbHelper.initDB();
+  // }
 
   @override
   void initState() {
     super.initState();
-    fetchdata = DBHelper.dbHelper.fetchAllData();
-    checkDB();
+    // fetchdata = DBHelper.dbHelper.fetchAllData();
+    // checkDB();
+    // ignore: unused_label
     navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
 
   PhotoViewController controller1 = PhotoViewController();
   final controller = ScreenshotController();
-  // String frame = "";
-  // double top = 0;
-  // double left = 0;
-  // List<String> store = [];
-  // List<String> list = [];
-  // bool frm = true;
-  // bool stk = false;
-  // ignore: non_constant_identifier_names
-  // List us_list = [];
-  // ignore: non_constant_identifier_names
-  // List s_list = frameImage;
-
-  // double _scale = 1.0;
-  // late double _previousScale;
-  // double yOffset = 400.0;
-  // double xOffset = 50.0;
-  // double rotation = 0.0;
-  // double lastRotation = 0.0;
-  // double finalAngle = 0.0;
-  // double oldAngle = 0.0;
-  // double upsetAngle = 0.0;
-
-  // Offset offset = Offset.zero;
-
-  // final transController = TransformationController();
-  // TapDownDetails? doubleTapDetails;
-
-  // Offset centerOfGestureDetector = Offset(ballRadius, ballRadius);
-
-  // double height = 30;
-  // double width = 30;
+  dynamic frame;
+  // final _imageKey = GlobalKey<ImagePainterState>();
+  bool show = false;
 
   @override
   Widget build(BuildContext context) {
     final dynamic res = ModalRoute.of(context)!.settings.arguments;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Frame"),
-        centerTitle: true,
-      ),
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          res[0] != null
-              ? Container(
-                  // height: 300,
-                  // margin: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    // color: Colors.red,
-                    // border: Border.all(width: 3),
+    return BlocListener<EditPhotoCubit, EditPhotoState>(
+      listener: (context, state) {},
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Add Frame"),
+          centerTitle: true,
+          leading: (show == false)
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      'setimage',
+                      (route) => false,
+                      arguments: res,
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
                   ),
-                  child: Screenshot(
-                    controller: controller,
-                    child: Container(
-                      height: 400,
-                      width: double.infinity,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // Positioned(
-                          //   left: offset.dx,
-                          //   top: offset.dy,
-                          //   child: GestureDetector(
-                              // onScaleStart: (ScaleStartDetails details) {
-                              //   print(details);
-                              //   _previousScale = _scale;
-                              //   setState(() {});
-                              // },
-                              // onScaleUpdate: (ScaleUpdateDetails details) {
-                              //         print(details);
-                              //         _scale = _previousScale * details.scale;
-                              //         setState(() {});
-                              //       },
-                              // onPanUpdate: (details) {
-                              //   print(details);
-                              //   // _scale = _previousScale * details.scale;
-                              //   setState(() {
-                              //     offset = Offset(
-                              //       offset.dx + details.delta.dx,
-                              //       offset.dy + details.delta.dy,
-                              //     );
-                              //   });
-                              // },
-                              // onScaleEnd: (ScaleEndDetails details) {
-                              //   print(details);
-                              //   _previousScale = 1.0;
-                              //   setState(() {});
-                              // },
-                              // child: 
-                              // RotatedBox(
-                              //   quarterTurns: rotation.toInt(),
-                                // child: Transform(
-                                //   alignment: FractionalOffset.center,
-                                //   transform: Matrix4.diagonal3(
-                                //     Vector3(_scale, _scale, _scale),
-                                //   ),
-                                  PhotoView(
-                                    enablePanAlways: true,
-                                    enableRotation: true,
-                                  
-                                    // child: Image(
-                                  
-                                      imageProvider: FileImage(res[0]),
-                                    // ),
+                )
+              : IconButton(
+                  onPressed: () {
+                    setState(() {
+                      show = false;
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                  ),
+                ),
+        ),
+        body: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            res[0] != null
+                ? Container(
+                    decoration: const BoxDecoration(),
+                    child: Screenshot(
+                      controller: controller,
+                      child: Container(
+                        height: 450,
+                        width: double.infinity,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            PhotoView(
+                              backgroundDecoration:
+                                  const BoxDecoration(color: Colors.white),
+                              enablePanAlways: true,
+                              enableRotation: true,
+                              imageProvider: FileImage(res[0]),
+                            ),
+                            IgnorePointer(
+                              child: Container(
+                                height: 450,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(res[1]),
+                                    fit: BoxFit.fill,
                                   ),
-                              //   ),
-                              // ),
-                              // onVerticalDragUpdate: (DragUpdateDetails dd) {
-                              //   setState(() {
-                              //     offset = Offset(
-                              //       offset.dx + dd.delta.dx,
-                              //       offset.dy + dd.delta.dy,
-                              //     );
-                              //   });
-                              // },
-                              // onHorizontalDragUpdate: (DragUpdateDetails dd) {
-                              //   setState(() {
-                              //     offset = Offset(
-                              //       offset.dy + dd.delta.dy,
-                              //       offset.dx + dd.delta.dx,
-                              //     );
-                              //   });
-                              // },
-                            // ),
-                          // ),
-                          // SizedBox(
-                          //   child: Transform(
-                          //     transform: Matrix4.rotationZ(0),
-                          //     alignment: FractionalOffset.center,
-                          //     child: SizedBox(
-                          //       height: 370,
-                          //       width: 333,
-                          //       child: InteractiveViewer(
-                          //         child: Image.file(
-                          //           res[0],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-
-                          IgnorePointer(
-                            child: 
-                            Container(
-                              // margin: const EdgeInsets.all(10),
-                              height: 400,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(res[1]),
-                                  fit: BoxFit.fill,
                                 ),
                               ),
                             ),
-                          ),
-
-                          // Positioned(
-                          //         left: offset.dx,
-                          //         top: offset.dy,
-                          //         child: GestureDetector(
-                          //           onScaleStart: (ScaleStartDetails details) {
-                          //             print(details);
-                          //             _previousScale = _scale;
-                          //             setState(() {});
-                          //           },
-                                    // onScaleUpdate: (ScaleUpdateDetails details) {
-                                    //   print(details);
-                                    //   _scale = _previousScale * details.scale;
-                                    //   setState(() {});
-                                    // },
-                          //           onScaleEnd: (ScaleEndDetails details) {
-                          //             print(details);
-                          //             _previousScale = 1.0;
-                          //             setState(() {});
-                          //           },
-                          //           child: RotatedBox(
-                          //             quarterTurns: rotation.toInt(),
-                          //             child: Transform(
-                          //               alignment: FractionalOffset.center,
-                          //               transform: Matrix4.diagonal3(
-                          //                 Vector3(_scale, _scale, _scale),
-                          //               ),
-                          //               child: Image(
-                          //                 image: AssetImage(sticker),
-                          //               ),
-                          //             ),
-                          //           ),
-                          //           onVerticalDragUpdate: (DragUpdateDetails dd) {
-                          //             setState(() {
-                          //               offset = Offset(
-                          //                 offset.dx + dd.delta.dx,
-                          //                 offset.dy + dd.delta.dy,
-                          //               );
-                          //             });
-                          //           },
-                          //         ),
-                          //       ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : Container(
-                  alignment: Alignment.center,
-                  height: 300,
-                  width: 300,
-                  color: Colors.white,
-                  child: const Text("add Image"),
-                ),
-          const SizedBox(
-            height: 20,
-          ),
-          IgnorePointer(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:400),
-                        child: Container(
-                          height: double.infinity,
-                          width: double.infinity,
-                          color: Colors.white,
+                            (show == true)
+                                ? const ComponentLayer()
+                                : IgnorePointer(child: Container()),
+                          ],
                         ),
                       ),
                     ),
-          Padding(
-            padding: const EdgeInsets.only(top: 600),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed('re_frames', arguments: [res[0], res[2]]);
-                  },
-                  child: const Text("frame"),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    height: 300,
+                    width: 300,
+                    color: Colors.white,
+                    child: const Text("add Image"),
+                  ),
+            IgnorePointer(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 450),
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  color: Colors.white,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    ScreenCapture.capturedNav(controller, context);
-                  },
-                  child: const Text("sticker"),
-                ),
-              ],
+              ),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: 500),
+              child: Column(
+                children: [
+                  // Padding(
+                  //   padding: const EdgeInsets.all(10),
+                  //   child: Row(
+                  //     children: [
+                  //       GestureDetector(
+                  //         onTap: () {},
+                  //         child: Container(
+                  //           alignment: Alignment.center,
+                  //           height: 50,
+                  //           width: 80,
+                  //           decoration: BoxDecoration(
+                  //             color: Colors.black,
+                  //             borderRadius: BorderRadius.circular(10),
+                  //           ),
+                  //           child: const Text(
+                  //             'Image',
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 20,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       const SizedBox(
+                  //         width: 10,
+                  //       ),
+                  //       GestureDetector(
+                  //         onTap: () {},
+                  //         child: Container(
+                  //           alignment: Alignment.center,
+                  //           height: 50,
+                  //           width: 80,
+                  //           decoration: BoxDecoration(
+                  //             color: Colors.black,
+                  //             borderRadius: BorderRadius.circular(10),
+                  //           ),
+                  //           child: const Text(
+                  //             'Text',
+                  //             style: TextStyle(
+                  //               color: Colors.white,
+                  //               fontSize: 20,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            're_frames',
+                            arguments: [res[0], res[2]],
+                          );
+                        },
+                        child: const Text("frame"),
+                      ),
+                      // IconButton(
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       show = false;
+                      //     });
+                      //   },
+                      //   icon: const Icon(Icons.image),
+                      // ),
+                      (show == true)?IconButton(
+                        onPressed: () async {
+                          context
+                              .read<EditPhotoCubit>()
+                              .changeEditState(EditState.addingText);
+
+                          final result = await addText(context);
+
+                          if (result == null ||
+                              result is! DragableWidgetTextChild) {
+                            if (!mounted) return;
+                            context
+                                .read<EditPhotoCubit>()
+                                .changeEditState(EditState.idle);
+                            return;
+                          }
+
+                          final widget = DragableWidget(
+                            widgetId: DateTime.now().millisecondsSinceEpoch,
+                            child: result,
+                            onPress: (id, widget) async {
+                              if (widget is DragableWidgetTextChild) {
+                                context
+                                    .read<EditPhotoCubit>()
+                                    .changeEditState(EditState.addingText);
+
+                                final result = await addText(
+                                  context,
+                                  widget,
+                                );
+
+                                if (result == null ||
+                                    result is! DragableWidgetTextChild) {
+                                  if (!mounted) return;
+                                  context
+                                      .read<EditPhotoCubit>()
+                                      .changeEditState(EditState.idle);
+                                  return;
+                                }
+
+                                if (!mounted) return;
+                                context
+                                    .read<EditPhotoCubit>()
+                                    .editWidget(id, result);
+                              }
+                            },
+                            onLongPress: (id) async {
+                              final result = await showConfirmationDialog(
+                                context,
+                                title: "Delete Text ?",
+                                desc: "Are you sure want to Delete this text ?",
+                                rightText: "Delete",
+                              );
+                              if (result == null) return;
+
+                              if (result) {
+                                if (!mounted) return;
+                                context.read<EditPhotoCubit>().deleteWidget(id);
+                              }
+                            },
+                          );
+
+                          if (!mounted) return;
+                          context.read<EditPhotoCubit>().addWidget(widget);
+                        },
+                        icon: const Icon(Icons.text_fields_rounded),
+                      ):Container(),
+                      (show == true)
+                          ? ElevatedButton(
+                              onPressed: () {
+                                ScreenCapture.capturedNav(controller, context);
+                              },
+                              child: const Text("sticker"),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  show = true;
+                                });
+                              },
+                              child: const Text("Text"),
+                            ),
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  // ignore: non_constant_identifier_names
-  Future<dynamic> ShowCapturedWidget(
-    BuildContext context,
-    Uint8List capturedImage,
-  ) {
-    return showDialog(
-      useSafeArea: false,
-      context: context,
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.grey,
-          title: const Text("saved image"),
-        ),
-        body: Center(
-          child:
-              // ignore: unnecessary_null_comparison
-              capturedImage != null ? Image.memory(capturedImage) : Container(),
-        ),
-      ),
-    );
-  }
+  //   Row(
+  //   children: [
+  //     GestureDetector(
+  //       onTap: () {
+  //         setState(() {
+  //           frame = '';
+  //         });
+  //       },
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Container(
+  //           width: 100,
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               color:
+  //                   const Color.fromRGBO(0, 0, 0, 1),
+  //               width: 1,
+  //             ),
+  //           ),
+  //           // ignore: prefer_const_constructors
+  //           child: Center(
+  //             child: const Text(
+  //               'No\nEditPage',
+  //               style: TextStyle(
+  //                 color: Colors.black,
+  //               ),
+  //               textAlign: TextAlign.center,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //     Expanded(
+  //       child: ListView.builder(
+  //           scrollDirection: Axis.horizontal,
+  //           itemCount: res[2].length,
+  //           itemBuilder: (context, i) {
+  //             return GestureDetector(
+  //               onTap: () {
+  //                 setState(() {
+  //                   frame = res[2][i];
+  //                 });
+  //               },
+  //               child: Padding(
+  //                 padding: const EdgeInsets.all(8.0),
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     image: DecorationImage(image: AssetImage(res[2][i])),
+  //                     borderRadius:
+  //                         BorderRadius.circular(10),
+  //                     border: Border.all(
+  //                       color: const Color.fromRGBO(
+  //                           0, 0, 0, 1),
+  //                       width: 1,
+  //                     ),
+  //                   ),
+  //                   width: 100,
+  //                   // height: 100,
+  //                   // child: Image(
+  //                   //   image: AssetImage(
+  //                   //     res[2][i],
+  //                   //   ),
+  //                   // ),
+  //                 ),
+  //               ),
+  //             );
+  //           }),
+  //     ),
+  //   ],
+  // ),
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_statements, deprecated_member_use
+// ignore_for_file: unnecessary_statements, deprecated_member_use, avoid_print
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -8,7 +8,7 @@ import 'package:festival_frame/widgets/stickIt.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -33,6 +33,7 @@ class _StickerPageState extends State<StickerPage> {
     super.initState();
     fetchdata = DBHelper.dbHelper.fetchAllData();
     checkDB();
+    // ignore: unused_label
     navigatorObservers:
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
@@ -67,6 +68,9 @@ class _StickerPageState extends State<StickerPage> {
   Widget build(BuildContext context) {
     final dynamic arg = ModalRoute.of(context)!.settings.arguments;
     _stickIt = StickIt(
+      panelStickerBackgroundColor: Colors.grey.shade300,
+      stickerRotatable: true,
+      panelBackgroundColor: Colors.transparent,
       stickerList: [
         Image.asset("assets/sticker/s1.png"),
         Image.asset("assets/sticker/s2.png"),
@@ -96,7 +100,6 @@ class _StickerPageState extends State<StickerPage> {
     );
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         title:
             const Text('Sticker Select', style: TextStyle(color: Colors.white)),
         leading: IconButton(
@@ -113,6 +116,7 @@ class _StickerPageState extends State<StickerPage> {
             onPressed: () async {
               final image = await _stickIt.exportImage();
 
+              // ignore: use_build_context_synchronously
               Navigator.of(context).pushNamedAndRemoveUntil(
                 'savePage',
                 (route) => false,
@@ -121,7 +125,6 @@ class _StickerPageState extends State<StickerPage> {
               // ignore: use_build_context_synchronously
               SaveDB.Store(context, image, fetchdata);
 
-              // ShowCapturedWidget(context, image);
               rewardedAds();
               if (isRewarded) {
                 rewardedAd!.show(
@@ -137,68 +140,6 @@ class _StickerPageState extends State<StickerPage> {
         ],
       ),
       body: _stickIt,
-    );
-  }
-
-  // ignore: non_constant_identifier_names
-  Future<dynamic> ShowCapturedWidget(
-    BuildContext context,
-    Uint8List capturedImage,
-  ) {
-    return showDialog(
-      useSafeArea: false,
-      context: context,
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-          title: const Text("saved image"),
-          actions: [
-            IconButton(
-              onPressed: () async {
-                // final url = ;
-                File s = File.fromRawPath(capturedImage);
-                final directory = await getApplicationDocumentsDirectory();
-                final image = File('${directory.path}/flutter.png');
-                image.writeAsBytesSync(capturedImage);
-                Share.shareFiles([image.path]);
-
-                rewardedAds();
-                if (isRewarded) {
-                  rewardedAd!.show(
-                    onUserEarnedReward: (ad, reward) {},
-                  );
-                }
-              },
-              icon: const Icon(
-                Icons.share,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-        body: Center(
-          child: capturedImage != null
-              ? Column(
-                  children: [
-                    Container(
-                      height: 500,
-                      width: 500,
-                      child: Image.memory(capturedImage),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/',
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                      child: const Text("Done"),
-                    )
-                  ],
-                )
-              : Container(),
-        ),
-      ),
     );
   }
 }

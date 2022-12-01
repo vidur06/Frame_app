@@ -92,11 +92,12 @@ class _ReFramesState extends State<ReFrames> {
                   Navigator.of(context).pushNamed("framepage", arguments: [
                     res[0],
                     res[1][i],
+                    res[1],
                   ]);
-                interstitialAds();
-                if (isLoaded) {
-                  interstitialAd.show();
-                }
+                // interstitialAds();
+                // if (isLoaded) {
+                //   interstitialAd.show();
+                // }
               },
               child: Card(
                 child: Container(

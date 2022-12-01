@@ -1,6 +1,10 @@
+// ignore: file_names
+// ignore_for_file: avoid_unnecessary_containers, unnecessary_this
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:vector_math/vector_math_64.dart' as vec;
 
 typedef StickerImageRemoveCallback = void Function(StickerImage sticker);
@@ -37,6 +41,7 @@ class StickerImage extends StatefulWidget {
   }
 
   @override
+  // ignore: library_private_types_in_public_api, no_logic_in_create_state
   _StickerImageState createState() => _stickerImageState;
 }
 
@@ -45,17 +50,15 @@ class _StickerImageState extends State<StickerImage> {
 
   double _scale = 1.0;
   double _previousScale = 1.0;
-  Offset _previousOffset = Offset(0, 0);
-  Offset _startingFocalPoint = Offset(0, 0);
-  Offset _offset = Offset(0, 0);
+  Offset _previousOffset = Offset.zero;
+  Offset _startingFocalPoint = Offset.zero;
+  Offset _offset = Offset.zero;
   double _rotation = 0.0;
-  double _previousRotation = 0.0;
-  bool _isSelected = false;
 
   @override
   void dispose() {
     super.dispose();
-    _offset = Offset(0, 0);
+    _offset = Offset.zero;
     _scale = 1.0;
   }
 
@@ -80,17 +83,16 @@ class _StickerImageState extends State<StickerImage> {
                     onScaleStart: (ScaleStartDetails details) {
                       _startingFocalPoint = details.focalPoint;
                       _previousOffset = _offset;
-                      _previousRotation = _rotation;
                       _previousScale = _scale;
-                      // print(
-                      //     "begin - focal : ${details.focalPoint}, local : ${details.localFocalPoint}");
                     },
+
                     onScaleUpdate: (ScaleUpdateDetails details) {
                       _scale = min(max(_previousScale * details.scale, widget.minScale), widget.maxScale);
                       if (details.rotation != 0.0 && widget.rotatable) {
                         _rotation = details.rotation;
                       }
-                      Offset normalizedOffset = (_startingFocalPoint - _previousOffset) / _previousScale;
+                      final Offset normalizedOffset = (_startingFocalPoint - _previousOffset) / _previousScale;
+                      // ignore: no_leading_underscores_for_local_identifiers
                       Offset __offset = details.focalPoint - (normalizedOffset * _scale);
                       __offset = Offset(max(__offset.dx, -widget.width), max(__offset.dy, -widget.height));
                       __offset =
@@ -99,25 +101,14 @@ class _StickerImageState extends State<StickerImage> {
                         _offset = __offset;
                         // print("move - $_offset, scale : $_scale");
                       });
-                      
                     },
+
                     onScaleEnd: (details){
                       if(_offset.dy <= 550 && _offset.dy >= 360 && _offset.dx >= 120 && _offset.dx <= 200){
                         setState(() {
                           this.widget.onTapRemove(this.widget);
                         });
                       }
-                    },
-                    
-                    // onTap: () {
-                    //   setState(() {
-                    //     _isSelected = !_isSelected;
-                    //   });
-                    // },
-                    onTapCancel: () {
-                      setState(() {
-                        _isSelected = false;
-                      });
                     },
                     onDoubleTap: () {
                       setState(() {
@@ -129,24 +120,6 @@ class _StickerImageState extends State<StickerImage> {
                 ),
               ),
             ),
-            // _isSelected
-            //     ? Positioned(
-            //         top: 12,
-            //         right: 12,
-            //         width: 24,
-            //         height: 24,
-            //         child: Container(
-            //           child: IconButton(
-            //             padding: EdgeInsets.zero,
-            //             icon:const Icon(Icons.remove_circle),
-            //             color:const Color.fromRGBO(255, 0, 0, 1.0),
-            //             onPressed: () {
-            //               this.widget.onTapRemove(this.widget);
-            //             },
-            //           ),
-            //         ),
-            //       )
-            //     : Container(),
           ],
         ),
       ),
@@ -155,7 +128,6 @@ class _StickerImageState extends State<StickerImage> {
 
   void _hideRemoveButton() {
     setState(() {
-      _isSelected = false;
     });
   }
 }

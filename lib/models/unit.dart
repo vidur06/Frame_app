@@ -1,10 +1,13 @@
 // ignore_for_file: avoid_classes_with_only_static_members, parameter_assignments
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:festival_frame/models/model.dart';
 import 'package:festival_frame/models/sqlhelper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -38,8 +41,18 @@ class Navigation {
     return "success";
   }
 }
+Future<Uint8List> testComporessList(Uint8List list) async {
+    var result = await FlutterImageCompress.compressWithList(
+      list,
+      minHeight: 1920,
+      minWidth: 1080,
+      quality: 100,
+    );
+    return result;
+  }
 
 class ScreenCapture {
+  
   static Capture(BuildContext context, controller) {
     controller
         .capture(
@@ -52,8 +65,17 @@ class ScreenCapture {
           backgroundColor: Colors.green,
         ),
       );
-      if (capturedImage != null) {
-        await ImageGallerySaver.saveImage(capturedImage);
+      if (capturedImage != null){
+        final img = await testComporessList(capturedImage);
+              final date = DateTime.now().millisecondsSinceEpoch;
+              final directory = Directory('/storage/emulated/0/Download');
+              final dirPath = Directory('${directory.path}/Demo_app').create();
+              print('path: $dirPath');
+              final directoryPath = Directory('/storage/emulated/0/Download/Demo_app');
+              final file = await File('${directoryPath.path}/$date.jpg').create();
+              print('file : $file');
+              file.writeAsBytes(img);
+        // await ImageGallerySaver.saveImage(capturedImage);
       }
     }).catchError((onError) {
       // ignore: avoid_print
@@ -61,6 +83,7 @@ class ScreenCapture {
     });
     return "captured success";
   }
+  
 
   static capturedNav(controller, BuildContext context) {
     controller

@@ -66,7 +66,6 @@ class _FramesState extends State<Frames> {
     final dynamic res = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
         title: const Text(
           "select frame",
           style: TextStyle(color: Colors.white),
@@ -74,7 +73,7 @@ class _FramesState extends State<Frames> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushNamedAndRemoveUntil('select_frame', (route) => false);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -98,10 +97,10 @@ class _FramesState extends State<Frames> {
                     res,
                   ]);
                 }
-                interstitialAds();
-                if (isLoaded) {
-                  interstitialAd.show();
-                }
+                // interstitialAds();
+                // if (isLoaded) {
+                //   interstitialAd.show();
+                // }
               },
               child: Card(
                 child: Container(

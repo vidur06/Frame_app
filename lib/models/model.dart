@@ -108,21 +108,4 @@ class DragImageState extends State<DragImage> {
       ),
     );
   }
-
-  // void _handleScaleStart(ScaleStartDetails start) {
-  //   setState(() {});
-  // }
-
-  // void _handleScaleUpdate(ScaleUpdateDetails update) {
-  //   setState(() {
-  //     _zoom = 2;
-  //   });
-  // }
-
-  // void _handleScaleReset() {
-  //   setState(() {
-  //     _zoom = 1.0;
-  //     _position = Offset.zero;
-  //   });
-  // }
 }
