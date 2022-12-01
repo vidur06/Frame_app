@@ -1,44 +1,29 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, unnecessary_this
 
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:festival_frame/widgets/stickerImage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
-// import 'package:stick_it/src/sticker_image.dart';
 
-/// [StickIt] creates a [Stack] view, consisting of
-/// 1. the [child] provided as [Widget]
-/// 2. a [List] of [Image]s called [stickerList].
-///
-/// The default behavior will allow the [Image]s to be added, scaled, rotated and deleted.
-/// Sticker can be scaled within a customizable scale.
-///
-/// Calling the [exportImage] function will provide an [Uint8List],
-/// that can be used to preview or further save the image + sticker composition.
-///
-/// See also:
-///
-///  * <https://github.com/myriky/flutter_simple_sticker_view>, which is the original project.
 class StickIt extends StatefulWidget {
-  StickIt(
-      {Key? key,
-      required this.child,
-      required this.stickerList,
-      this.devicePixelRatio = 3.0,
-      this.panelHeight = 200.0,
-      this.panelBackgroundColor = Colors.black,
-      this.panelStickerBackgroundColor = Colors.white10,
-      this.panelStickerCrossAxisCount = 4,
-      this.panelStickerAspectRatio = 1.0,
-      this.stickerRotatable = true,
-      this.stickerSize = 100.0,
-      this.stickerMaxScale = 2.0,
-      this.stickerMinScale = 0.5,
-      this.viewport = const Size(0.0, 0.0)})
-      : super(key: key);
+  StickIt({
+    Key? key,
+    required this.child,
+    required this.stickerList,
+    this.devicePixelRatio = 3.0,
+    this.panelHeight = 200.0,
+    this.panelBackgroundColor = Colors.black,
+    this.panelStickerBackgroundColor = Colors.white10,
+    this.panelStickerCrossAxisCount = 4,
+    this.panelStickerAspectRatio = 1.0,
+    this.stickerRotatable = true,
+    this.stickerSize = 100.0,
+    this.stickerMaxScale = 2.0,
+    this.stickerMinScale = 0.5,
+    // ignore: use_named_constants
+    this.viewport = const Size(0.0, 0.0),
+  }) : super(key: key);
 
   final Widget child;
 
@@ -70,11 +55,12 @@ class StickIt extends StatefulWidget {
 
   Future<Uint8List> exportImage() async {
     await _stickItState._prepareExport();
-    Future<Uint8List> exportImage = _stickItState._exportImage();
+    final Future<Uint8List> exportImage = _stickItState._exportImage();
     return exportImage;
   }
 
   @override
+  // ignore: library_private_types_in_public_api, no_logic_in_create_state
   _StickItState createState() => _stickItState;
 }
 
@@ -82,13 +68,13 @@ class _StickItState extends State<StickIt> {
   _StickItState();
 
   final GlobalKey key = GlobalKey();
-  List<StickerImage> _attachedList = [];
+  final List<StickerImage> _attachedList = [];
   late Size _viewport;
 
   final keyText = GlobalKey();
   Size? size;
   Offset position = Offset.zero;
-  
+
   WidgetsToImageController controller = WidgetsToImageController();
   Uint8List? bytes;
 
@@ -96,7 +82,6 @@ class _StickItState extends State<StickIt> {
   void initState() {
     _viewport = widget.viewport;
     super.initState();
-    // calculateSizeAndPosition();
   }
 
   void calculateSizeAndPosition() =>
@@ -126,9 +111,11 @@ class _StickItState extends State<StickIt> {
                     LayoutBuilder(
                       builder:
                           (BuildContext context, BoxConstraints constraints) {
-                        if (_viewport == const Size(0.0, 0.0))
+                        // ignore: use_named_constants
+                        if (_viewport == const Size(0.0, 0.0)) {
                           _viewport =
                               Size(constraints.maxWidth, constraints.maxHeight);
+                        }
                         return widget.child;
                       },
                     ),
@@ -145,33 +132,32 @@ class _StickItState extends State<StickIt> {
         Padding(
           padding: const EdgeInsets.only(top: 430, left: 180),
           child: Container(
-            color: Colors.transparent,
-            child: IconButton(
-              key: keyText,
-              onPressed: () {
-                calculateSizeAndPosition();
-                print('p.dx: ${position.dx}');
-                print('p.dy: ${position.dy}');
-              },
-              icon: Icon(
-                Icons.delete,
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
                 color: Colors.red,
-                size: 30,
+                width: 2,
               ),
             ),
-            // Icon(
-            //   Icons.delete,
-            //   color: Colors.red,
-            //   size: 30,
-            // ),
+            child: const Icon(
+              Icons.delete,
+              color: Colors.red,
+              size: 30,
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 500),
           child: Scrollbar(
             child: DragTarget(
-              builder: (BuildContext context, candidateData,
-                  List<dynamic> rejectedData) {
+              builder: (
+                BuildContext context,
+                candidateData,
+                List<dynamic> rejectedData,
+              ) {
                 return Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -184,7 +170,10 @@ class _StickItState extends State<StickIt> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          color: this.widget.panelStickerBackgroundColor,
+                          decoration: BoxDecoration(
+                            color: this.widget.panelStickerBackgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: TextButton(
                             onPressed: () {
                               _attachSticker(widget.stickerList[i]);
@@ -195,8 +184,9 @@ class _StickItState extends State<StickIt> {
                       );
                     },
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: this.widget.panelStickerCrossAxisCount,
-                        childAspectRatio: this.widget.panelStickerAspectRatio),
+                      crossAxisCount: this.widget.panelStickerCrossAxisCount,
+                      childAspectRatio: this.widget.panelStickerAspectRatio,
+                    ),
                   ),
                   height: this.widget.panelHeight,
                 );
@@ -210,32 +200,27 @@ class _StickItState extends State<StickIt> {
 
   void _attachSticker(Image image) {
     setState(() {
-      _attachedList.add(StickerImage(
-        image,
-        height: this.widget.stickerSize,
-        key: Key("sticker_${_attachedList.length}"),
-        maxScale: this.widget.stickerMaxScale,
-        minScale: this.widget.stickerMinScale,
-        onTapRemove: (sticker) {
-          this._onTapRemoveSticker(sticker);
-        },
-        rotatable: this.widget.stickerRotatable,
-        viewport: _viewport,
-        width: this.widget.stickerSize,
-      ));
+      _attachedList.add(
+        StickerImage(
+          image,
+          height: this.widget.stickerSize,
+          key: Key("sticker_${_attachedList.length}"),
+          maxScale: this.widget.stickerMaxScale,
+          minScale: this.widget.stickerMinScale,
+          onTapRemove: (sticker) {
+            this._onTapRemoveSticker(sticker);
+          },
+          rotatable: this.widget.stickerRotatable,
+          viewport: _viewport,
+          width: this.widget.stickerSize,
+        ),
+      );
     });
   }
 
   Future<Uint8List> _exportImage() async {
     final bytes = await controller.capture();
     return bytes!;
-    // RenderRepaintBoundary boundary =
-    //     key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    // var image =
-    //     await boundary.toImage(pixelRatio: this.widget.devicePixelRatio);
-    // var byteData = await image.toByteData(format: ImageByteFormat.png);
-    // var pngBytes = byteData!.buffer.asUint8List();
-    // return pngBytes;
   }
 
   void _onTapRemoveSticker(sticker) {
@@ -245,6 +230,7 @@ class _StickItState extends State<StickIt> {
   }
 
   Future<void> _prepareExport() async {
+    // ignore: avoid_function_literals_in_foreach_calls
     _attachedList.forEach((s) {
       s.prepareExport();
     });

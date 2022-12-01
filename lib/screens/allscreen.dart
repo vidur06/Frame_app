@@ -4,10 +4,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:festival_frame/models/frame_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:screenshot/screenshot.dart';
@@ -36,7 +34,7 @@ class _DashBoardState extends State<DashBoard> {
     "assets/images/ad8.jpg",
     "assets/images/ad9.jpg",
     "assets/images/ad10.jpg",
-    "assets/images/ad11.jpg",
+    // "assets/images/ad11.jpg",
   ];
 
   List framesImage = fImage;
@@ -108,13 +106,13 @@ class _DashBoardState extends State<DashBoard> {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(top:20,right: 15),
                   child: Text(
                     "Festivals",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.black,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -158,16 +156,14 @@ class _DashBoardState extends State<DashBoard> {
                                   (e.name == items[i])
                                       ? argument = e.list
                                       : argument;
-                                  // print('e.name: ${e.list}');
                                 });
                                 print('argument: $argument');
-                                //   final pickedFile = await Imagepick.imagepic();
-                                // if (pickedFile.path != null) {
                                 // ignore: use_build_context_synchronously
                                 Navigator.of(context).pushNamed(
                                   "frames",
                                   arguments: argument,
                                 );
+                                Scaffold.of(context).closeDrawer();
                               },
                               title: Text(
                                 items[i],
