@@ -1,8 +1,5 @@
 // ignore_for_file: unnecessary_statements
 
-import 'dart:io';
-
-import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,7 +60,7 @@ class _SelectFrameState extends State<SelectFrame> {
                   onTap: () async {
                     var argument;
                     allframe.forEach((e) {
-                      (e.name == name[i]) ? argument = e.list : argument;
+                      (e.name == name[i]) ? argument = [e.list,e.sticker] : argument;
                     });
                     Navigator.of(context).pushNamed(
                       "frames",

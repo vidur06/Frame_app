@@ -93,6 +93,7 @@ class _ReFramesState extends State<ReFrames> {
                     res[0],
                     res[1][i],
                     res[1],
+                    res[2],
                   ]);
                 // interstitialAds();
                 // if (isLoaded) {

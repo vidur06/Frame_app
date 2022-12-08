@@ -53,6 +53,7 @@ class DBHelper {
     const String query = "SELECT * FROM $table";
 
     final List response = await db!.rawQuery(query);
+    print('response : $response');
 
     return response.map((e) => Storage.fromMap(e)).toList();
   }

@@ -82,7 +82,7 @@ class _FramesState extends State<Frames> {
       ),
       body: StaggeredGridView.countBuilder(
         crossAxisCount: 3,
-        itemCount: res.length,
+        itemCount: res[0].length,
         itemBuilder: (context, i) {
           return Card(
             elevation: 2,
@@ -93,8 +93,9 @@ class _FramesState extends State<Frames> {
                 if (pickedFile.path != null) {
                   Navigator.of(context).pushNamed("setimage", arguments: [
                     File(pickedFile.path),
-                    res[i],
-                    res,
+                    res[0][i],
+                    res[0],
+                    res[1],
                   ]);
                 }
                 // interstitialAds();
@@ -107,7 +108,7 @@ class _FramesState extends State<Frames> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
-                        res[i],
+                        res[0][i],
                       ),
                       fit: BoxFit.fill,
                     ),

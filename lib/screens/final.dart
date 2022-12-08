@@ -1,17 +1,14 @@
 // ignore_for_file: unnecessary_statements, deprecated_member_use, avoid_print
 
-import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:festival_frame/models/unit.dart';
+import 'dart:io';
+
 import 'package:festival_frame/widgets/stickIt.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-// ignore: depend_on_referenced_packages
-import 'package:path_provider/path_provider.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../models/model.dart';
 import '../models/sqlhelper.dart';
@@ -24,14 +21,11 @@ class StickerPage extends StatefulWidget {
 
 class _StickerPageState extends State<StickerPage> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  ScreenshotController screenshotController = ScreenshotController();
   late StickIt _stickIt;
-  late Future<List<Storage>> fetchdata;
 
   @override
   void initState() {
     super.initState();
-    fetchdata = DBHelper.dbHelper.fetchAllData();
     checkDB();
     // ignore: unused_label
     navigatorObservers:
@@ -71,32 +65,8 @@ class _StickerPageState extends State<StickerPage> {
       panelStickerBackgroundColor: Colors.grey.shade300,
       stickerRotatable: true,
       panelBackgroundColor: Colors.transparent,
-      stickerList: [
-        Image.asset("assets/sticker/s1.png"),
-        Image.asset("assets/sticker/s2.png"),
-        Image.asset("assets/sticker/s3.png"),
-        Image.asset("assets/sticker/s4.png"),
-        Image.asset("assets/sticker/s5.png"),
-        Image.asset("assets/sticker/s6.png"),
-        Image.asset("assets/sticker/s7.png"),
-        Image.asset("assets/sticker/s8.png"),
-        Image.asset("assets/sticker/s9.png"),
-        Image.asset("assets/sticker/s10.png"),
-        Image.asset("assets/sticker/s11.png"),
-        Image.asset("assets/sticker/s12.png"),
-        Image.asset("assets/sticker/s13.png"),
-        Image.asset("assets/sticker/s14.png"),
-        Image.asset("assets/sticker/s15.png"),
-        Image.asset("assets/sticker/s16.png"),
-        Image.asset("assets/sticker/s17.png"),
-        Image.asset("assets/sticker/s18.png"),
-        Image.asset("assets/sticker/s19.png"),
-        Image.asset("assets/sticker/s20.png"),
-        Image.asset("assets/sticker/s21.png"),
-        Image.asset("assets/sticker/s22.png"),
-        Image.asset("assets/sticker/s23.png"),
-      ],
-      child: Container(color: Colors.white, child: Image.memory(arg)),
+      stickerList: arg[1],
+      child: Container(color: Colors.white, child: Image.memory(arg[0])),
     );
     return Scaffold(
       appBar: AppBar(
@@ -116,14 +86,26 @@ class _StickerPageState extends State<StickerPage> {
             onPressed: () async {
               final image = await _stickIt.exportImage();
 
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                'savePage',
-                (route) => false,
-                arguments: image,
+              final img = await testComporessList(image);
+              final date = DateTime.now().millisecondsSinceEpoch;
+              final directory = Directory('/storage/emulated/0/Download');
+              final dirPath = Directory('${directory.path}/Demo_app').create();
+              final directoryPath = Directory('/storage/emulated/0/Download/Demo_app');
+              final file = await File('${directoryPath.path}/$date.jpg').create();
+              print('file : $file');
+              file.writeAsBytes(img);
+
+              Map<String, dynamic> data = {
+                'image': img,
+              };
+               Storage s = Storage.fromMap(data);
+              int id = await DBHelper.dbHelper.insert(s);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Successfully download ${file.path}"),
+                  backgroundColor : Colors.green,
+                ),
               );
-              // ignore: use_build_context_synchronously
-              SaveDB.Store(context, image, fetchdata);
 
               rewardedAds();
               if (isRewarded) {
@@ -131,6 +113,12 @@ class _StickerPageState extends State<StickerPage> {
                   onUserEarnedReward: (ad, reward) {},
                 );
               }
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                'savePage',
+                (route) => false,
+                arguments: image,
+              );
+                        
             },
             icon: const Icon(
               Icons.done,
@@ -141,5 +129,15 @@ class _StickerPageState extends State<StickerPage> {
       ),
       body: _stickIt,
     );
+  }
+
+  Future<Uint8List> testComporessList(Uint8List list) async {
+    var result = await FlutterImageCompress.compressWithList(
+      list,
+      minHeight: 1920, 
+      minWidth: 1080,
+      quality: 100,
+    );
+    return result;
   }
 }
