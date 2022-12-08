@@ -28,14 +28,10 @@ class AddTextLayout extends StatefulWidget {
 }
 
 class _AddTextLayoutState extends State<AddTextLayout> {
-  /// main text editor
   late TextEditingController _textController;
 
-  /// main text style, when the style change this class will get notify
-  /// and the UI will updated
   late ValueNotifier<DragableWidgetTextChild> _valueListener;
 
-  /// list colors of the text, that we can choose
   final colors = [
     Colors.black,
     Colors.white,
@@ -50,7 +46,6 @@ class _AddTextLayoutState extends State<AddTextLayout> {
     Colors.orange,
   ];
 
-  /// list font of the text, that we can choose
   final fonts = [
     GoogleFonts.robotoMono(),
     GoogleFonts.smokum(),
@@ -92,7 +87,6 @@ class _AddTextLayoutState extends State<AddTextLayout> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          /// main text field that will show the text that we input
           Positioned.fill(
             child: Align(
               alignment: Alignment.center,
@@ -123,7 +117,6 @@ class _AddTextLayoutState extends State<AddTextLayout> {
             ),
           ),
 
-          /// done button
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             right: 20,
@@ -154,7 +147,6 @@ class _AddTextLayoutState extends State<AddTextLayout> {
             ),
           ),
 
-          /// button for editing alignment
           Positioned(
             top: MediaQuery.of(context).padding.top + 10,
             left: 20,
@@ -246,11 +238,10 @@ class _AddTextLayoutState extends State<AddTextLayout> {
             ),
           ),
 
-          /// widget for editing font size
           Positioned(
             left: 16,
             top: MediaQuery.of(context).padding.top + 70,
-            bottom: 140,
+            bottom: 120,
             child: RotatedBox(
               quarterTurns: 3,
               child: ValueListenableBuilder<DragableWidgetTextChild>(
@@ -271,7 +262,6 @@ class _AddTextLayoutState extends State<AddTextLayout> {
             ),
           ),
 
-          /// widget for editing textstyle
           Positioned(
             left: 0,
             bottom: 70,
@@ -323,7 +313,6 @@ class _AddTextLayoutState extends State<AddTextLayout> {
             ),
           ),
 
-          /// widget for editing color
           Positioned(
             left: 0,
             bottom: 20,

@@ -67,6 +67,10 @@ dependencies:
   permission_handler: ^10.2.0
   freezed_annotation: ^2.2.0
   google_fonts: ^3.0.1
+  extended_image: ^6.3.4
+  on_image_matrix: ^1.0.0+1
+  store_redirect: ^2.0.1
+  rating_dialog: ^2.0.4
 
 dev_dependencies:
   flutter_test:

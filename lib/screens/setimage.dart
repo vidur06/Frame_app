@@ -34,10 +34,10 @@ class _SetImageState extends State<SetImage> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).restorablePushNamedAndRemoveUntil(
+            Navigator.of(context).pushNamedAndRemoveUntil(
               'frames',
               (route) => false,
-              arguments: res[2],
+              arguments: [res[2],res[3]],
             );
           },
           icon: const Icon(
@@ -74,6 +74,7 @@ class _SetImageState extends State<SetImage> {
                         (imagefile != null) ? imagefile : res[0],
                         res[1],
                         res[2],
+                        res[3],
                       ],
                     );
                   },

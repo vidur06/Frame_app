@@ -1,7 +1,5 @@
 // ignore_for_file: unnecessary_statements
 
-import 'dart:typed_data';
-
 import 'package:festival_frame/models/unit.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,6 @@ import '../models/model.dart';
 import '../models/sqlhelper.dart';
 
 class AlbumPage extends StatefulWidget {
-  static const String id = 'LocalStorage';
   const AlbumPage({Key? key}) : super(key: key);
 
   @override
@@ -18,8 +15,8 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   late Future<List<Storage>> fetchdata;
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
     super.initState();
@@ -33,17 +30,14 @@ class _AlbumPageState extends State<AlbumPage> {
     await DBHelper.dbHelper.initDB();
   }
 
-  List image = [];
-
-  Uint8List? bytes;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (route) => false);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -51,14 +45,14 @@ class _AlbumPageState extends State<AlbumPage> {
         ),
         title: const Text(
           " Your Story",
-          style: TextStyle(
-          ),
+          style: TextStyle(),
         ),
         centerTitle: true,
       ),
       body: FutureBuilder(
         future: fetchdata,
         builder: (context, snapshot) {
+          print('snapshot.data: ${snapshot.data}');
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return Center(
@@ -69,65 +63,72 @@ class _AlbumPageState extends State<AlbumPage> {
               );
             } else if (snapshot.hasData) {
               final List<Storage> data = snapshot.data as List<Storage>;
-              return GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 5.0,
-                children: List.generate(data.length, (i) {
-                  // itemCount: data.length,
-                  // itemBuilder: (context, i) {
-                  return GestureDetector(
-                    onLongPress: () async {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('This is Peremently delete'),
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text(
-                                    'Close',
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
+              return GridView.builder(
+                  itemCount: data.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemBuilder: (context, i) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          'compress_image',
+                          arguments: data[i].image,
+                        );
+                      },
+                      onDoubleTap: () async {
+                        Navigator.of(context).pushNamed(
+                          'image_show',
+                          arguments: data[i].image,
+                        );
+                      },
+                      onLongPress: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('This is Peremently delete'),
+                                content: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    OutlinedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        'Close',
+                                        style: TextStyle(color: Colors.blue),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        await DBHelper.dbHelper
+                                            .delete(data[i].id);
+                                        setState(() {
+                                          fetchdata =
+                                              DBHelper.dbHelper.fetchAllData();
+                                        });
+                                        Navigator.of(context).pop();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
+                                      ),
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(width: 10),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    DeleteDB.Deletedb(data[i].id);
-                                    setState(() {
-                                      fetchdata =
-                                          DBHelper.dbHelper.fetchAllData();
-                                    });
-                                    // ignore: use_build_context_synchronously
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('Delete'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed("setting", arguments: data[i].image);
-                    },
-                    child: SizedBox(
-                      height: 300,
-                      width: 300,
-                      child: Image.memory(
-                        data[i].image,
+                              );
+                            });
+                      },
+                      child: Container(
+                        child: Image.memory(
+                          data[i].image,
+                        ),
                       ),
-                    ),
-                  );
-                }),
-              );
+                    );
+                  });
             }
           }
           return const Center(

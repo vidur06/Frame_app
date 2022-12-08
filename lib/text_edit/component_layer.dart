@@ -1,4 +1,3 @@
-
 import 'package:festival_frame/text_edit/edit_photo_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

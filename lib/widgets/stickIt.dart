@@ -1,10 +1,11 @@
 // ignore_for_file: sort_child_properties_last, unnecessary_this
 
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:festival_frame/widgets/stickerImage.dart';
 import 'package:flutter/material.dart';
-import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:flutter/rendering.dart';
 
 class StickIt extends StatefulWidget {
   StickIt({
@@ -71,11 +72,6 @@ class _StickItState extends State<StickIt> {
   final List<StickerImage> _attachedList = [];
   late Size _viewport;
 
-  final keyText = GlobalKey();
-  Size? size;
-  Offset position = Offset.zero;
-
-  WidgetsToImageController controller = WidgetsToImageController();
   Uint8List? bytes;
 
   @override
@@ -84,42 +80,27 @@ class _StickItState extends State<StickIt> {
     super.initState();
   }
 
-  void calculateSizeAndPosition() =>
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final RenderBox box =
-            keyText.currentContext!.findRenderObject() as RenderBox;
-
-        setState(() {
-          position = box.localToGlobal(Offset.zero);
-          size = box.size;
-        });
-      });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: <Widget>[
         Expanded(
-          child: WidgetsToImage(
+          child: RepaintBoundary(
             key: key,
-            controller: controller,
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[
-                Column(
-                  children: [
-                    LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        // ignore: use_named_constants
-                        if (_viewport == const Size(0.0, 0.0)) {
-                          _viewport =
-                              Size(constraints.maxWidth, constraints.maxHeight);
-                        }
-                        return widget.child;
-                      },
-                    ),
-                  ],
+                LayoutBuilder(
+                  builder:
+                      (BuildContext context, BoxConstraints constraints) {
+                    // ignore: use_named_constants
+                    if (_viewport == const Size(0.0, 0.0)) {
+                      _viewport =
+                          Size(constraints.maxWidth, constraints.maxHeight);
+                    }
+                    return widget.child;
+                  },
                 ),
                 Stack(
                   fit: StackFit.expand,
@@ -129,69 +110,63 @@ class _StickItState extends State<StickIt> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 430, left: 180),
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: Colors.red,
-                width: 2,
-              ),
-            ),
-            child: const Icon(
-              Icons.delete,
+        Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
               color: Colors.red,
-              size: 30,
+              width: 2,
             ),
           ),
+          child: const Icon(
+            Icons.delete,
+            color: Colors.red,
+            size: 30,
+          ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 500),
-          child: Scrollbar(
-            child: DragTarget(
-              builder: (
-                BuildContext context,
-                candidateData,
-                List<dynamic> rejectedData,
-              ) {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  color: this.widget.panelBackgroundColor,
-                  child: GridView.builder(
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    itemCount: widget.stickerList.length,
-                    itemBuilder: (BuildContext context, int i) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: this.widget.panelStickerBackgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              _attachSticker(widget.stickerList[i]);
-                            },
-                            child: widget.stickerList[i],
-                          ),
+        Scrollbar(
+          child: DragTarget(
+            builder: (
+              BuildContext context,
+              candidateData,
+              List<dynamic> rejectedData,
+            ) {
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                color: this.widget.panelBackgroundColor,
+                child: GridView.builder(
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.vertical,
+                  itemCount: widget.stickerList.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: this.widget.panelStickerBackgroundColor,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      );
-                    },
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: this.widget.panelStickerCrossAxisCount,
-                      childAspectRatio: this.widget.panelStickerAspectRatio,
-                    ),
+                        child: TextButton(
+                          onPressed: () {
+                            _attachSticker(widget.stickerList[i]);
+                          },
+                          child: widget.stickerList[i],
+                        ),
+                      ),
+                    );
+                  },
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: this.widget.panelStickerCrossAxisCount,
+                    childAspectRatio: this.widget.panelStickerAspectRatio,
                   ),
-                  height: this.widget.panelHeight,
-                );
-              },
-            ),
+                ),
+                height: this.widget.panelHeight,
+              );
+            },
           ),
         ),
       ],
@@ -219,8 +194,13 @@ class _StickItState extends State<StickIt> {
   }
 
   Future<Uint8List> _exportImage() async {
-    final bytes = await controller.capture();
-    return bytes!;
+    RenderRepaintBoundary boundary =
+        key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    var image =
+        await boundary.toImage(pixelRatio: this.widget.devicePixelRatio);
+    var byteData = await image.toByteData(format: ImageByteFormat.png);
+    var pngBytes = byteData!.buffer.asUint8List();
+    return pngBytes;
   }
 
   void _onTapRemoveSticker(sticker) {

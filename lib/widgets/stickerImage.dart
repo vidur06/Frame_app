@@ -104,7 +104,7 @@ class _StickerImageState extends State<StickerImage> {
                     },
 
                     onScaleEnd: (details){
-                      if(_offset.dy <= 550 && _offset.dy >= 360 && _offset.dx >= 120 && _offset.dx <= 200){
+                      if(_offset.dy <= 550 && _offset.dy >= 390 && _offset.dx >= 120 && _offset.dx <= 200){
                         setState(() {
                           this.widget.onTapRemove(this.widget);
                         });

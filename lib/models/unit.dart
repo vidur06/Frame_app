@@ -97,27 +97,27 @@ class ScreenCapture {
   }
 }
 
-class SaveDB {
-  static Store(BuildContext context, image, fetchdata) async {
-    final Map<String, dynamic> data = {
-      'image': image,
-    };
-    final Storage s = Storage.fromMap(data);
-    await DBHelper.dbHelper.insert(s);
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Image saved successfully"),
-        backgroundColor: Colors.green,
-      ),
-    );
+// class SaveDB {
+//   static Store(BuildContext context, image, fetchdata) async {
+//     final Map<String, dynamic> data = {
+//       'image': image,
+//     };
+//     final Storage s = Storage.fromMap(data);
+//     await DBHelper.dbHelper.insert(s);
+//     // ignore: use_build_context_synchronously
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       const SnackBar(
+//         content: Text("Image saved successfully"),
+//         backgroundColor: Colors.green,
+//       ),
+//     );
 
-    fetchdata = DBHelper.dbHelper.fetchAllData();
+//     fetchdata = DBHelper.dbHelper.fetchAllData();
 
-    await ImageGallerySaver.saveImage(image);
-    return "success";
-  }
-}
+//     await ImageGallerySaver.saveImage(image);
+//     return "success";
+//   }
+// }
 
 class DeleteDB {
   static Deletedb(data) async {

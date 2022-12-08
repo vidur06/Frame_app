@@ -1,14 +1,14 @@
 import 'dart:io';
 // ignore_for_file: unnecessary_statements
 
-import 'dart:typed_data';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:festival_frame/widgets/rate_dialog.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:rating_dialog/rating_dialog.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 import '../models/images.dart';
 import '../models/unit.dart';
@@ -119,7 +119,6 @@ class _DashBoardState extends State<DashBoard> {
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 8,
-                    bottom: 20,
                     left: 10,
                     right: 10,
                   ),
@@ -154,7 +153,7 @@ class _DashBoardState extends State<DashBoard> {
                                 print('items[i] : ${items[i]}');
                                 framesImage.forEach((e) {
                                   (e.name == items[i])
-                                      ? argument = e.list
+                                      ? argument = [e.list,e.sticker]
                                       : argument;
                                 });
                                 print('argument: $argument');
@@ -265,7 +264,7 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigation.Ratepage(context);
+                        showDialog(context: context, builder: (context) => const RateDialog());
                       },
                       child: LableWidget(
                         text: "Rate",
@@ -301,158 +300,6 @@ class _DashBoardState extends State<DashBoard> {
           print('No image selected.');
         }
       },
-    );
-  }
-}
-
-class Setting extends StatefulWidget {
-  const Setting({Key? key}) : super(key: key);
-
-  @override
-  State<Setting> createState() => _SettingState();
-}
-
-class _SettingState extends State<Setting> {
-  int _value = 20;
-  Uint8List? result;
-  final controller = ScreenshotController();
-
-  @override
-  Widget build(BuildContext context) {
-    dynamic res = ModalRoute.of(context)!.settings.arguments;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "settings",
-          key: ValueKey('appbar text'),
-        ),
-      ),
-      body: (res == null)
-          ? Center(
-              key: const ValueKey("center"),
-              child: Column(
-                key: const ValueKey("column"),
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InkWell(
-                    key: const ValueKey("inkwell"),
-                    onTap: () {
-                      Navigation.ImagePage(context);
-                    },
-                    child: const CircleAvatar(
-                      key: ValueKey("circle avtar"),
-                      radius: 50,
-                      child: Icon(
-                        key: ValueKey("icon"),
-                        Icons.add,
-                        size: 70,
-                      ),
-                    ),
-                  ),
-                  const Text(
-                    "Tap to select image",
-                    key: ValueKey("text"),
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  )
-                ],
-              ),
-            )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Screenshot(
-                    controller: controller,
-                    child: InteractiveViewer(
-                      child: SizedBox(
-                        width: 400,
-                        height: 500,
-                        child: Image.memory(
-                          (result != null) ? result : res,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Slider(
-                    value: _value.toDouble(),
-                    min: 0,
-                    max: 100.0,
-                    divisions: 100,
-                    label: "$_value",
-                    onChanged: (double newValue) async {
-                      setState(() {
-                        _value = newValue.round();
-                      });
-                      res = await FlutterImageCompress.compressWithList(
-                        res,
-                        quality: _value,
-                      );
-                      setState(() {
-                        result = res;
-                      });
-                    },
-                    onChangeEnd: (double newValue) async {
-                      setState(() {
-                        _value = newValue.round();
-                      });
-                      res = await FlutterImageCompress.compressWithList(
-                        res,
-                        quality: _value,
-                        rotate: 20,
-                      );
-                    },
-                    semanticFormatterCallback: (double newValue) {
-                      return '${newValue.round()} ';
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Text(
-                        "Low",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "medium",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        "high",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                      minimumSize: const Size(300, 45),
-                    ),
-                    onPressed: () {
-                      ScreenCapture.Capture(context, controller);
-                    },
-                    child: const Text("Export"),
-                  ),
-                ],
-              ),
-            ),
     );
   }
 }
