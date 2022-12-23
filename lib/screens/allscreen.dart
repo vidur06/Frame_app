@@ -1,17 +1,11 @@
-import 'dart:io';
 // ignore_for_file: unnecessary_statements
-
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:festival_frame/widgets/rate_dialog.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:rating_dialog/rating_dialog.dart';
-import 'package:store_redirect/store_redirect.dart';
 
 import '../models/images.dart';
-import '../models/unit.dart';
 import '../widgets/widgets.dart';
 
 class DashBoard extends StatefulWidget {
@@ -34,11 +28,9 @@ class _DashBoardState extends State<DashBoard> {
     "assets/images/ad8.jpg",
     "assets/images/ad9.jpg",
     "assets/images/ad10.jpg",
-    // "assets/images/ad11.jpg",
   ];
 
   List framesImage = fImage;
-  List iconImage = icons;
 
   @override
   void initState() {
@@ -55,15 +47,15 @@ class _DashBoardState extends State<DashBoard> {
   List items = [];
 
   String userImage = "";
-  List<String> drawer = festivleName;
+  List drawer = drawerField;
 
   void filterSearchResults(String query) {
-    final List<String> dummySearchList = [];
+    final List dummySearchList = [];
     dummySearchList.addAll(drawer);
     if (query.isNotEmpty) {
-      final List<String> dummyListData = [];
+      final List dummyListData = [];
       for (final item in dummySearchList) {
-        if (item.toLowerCase().contains(query.toLowerCase())) {
+        if (item.name.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       }
@@ -106,7 +98,7 @@ class _DashBoardState extends State<DashBoard> {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(top:20,right: 15),
+                  padding: EdgeInsets.only(top: 20, right: 15),
                   child: Text(
                     "Festivals",
                     style: TextStyle(
@@ -150,10 +142,10 @@ class _DashBoardState extends State<DashBoard> {
                             child: ListTile(
                               onTap: () async {
                                 var argument;
-                                print('items[i] : ${items[i]}');
+                                // print('items[i] : ${items[i]}');
                                 framesImage.forEach((e) {
-                                  (e.name == items[i])
-                                      ? argument = [e.list,e.sticker]
+                                  (e.name == items[i].name)
+                                      ? argument = [e.list, e.sticker]
                                       : argument;
                                 });
                                 print('argument: $argument');
@@ -165,7 +157,7 @@ class _DashBoardState extends State<DashBoard> {
                                 Scaffold.of(context).closeDrawer();
                               },
                               title: Text(
-                                items[i],
+                                items[i].name,
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -175,7 +167,7 @@ class _DashBoardState extends State<DashBoard> {
                                 height: 30,
                                 width: 30,
                                 child: Image(
-                                  image: AssetImage(iconImage[i]),
+                                  image: AssetImage(items[i].img),
                                 ),
                               ),
                               minVerticalPadding: 20,
@@ -234,7 +226,7 @@ class _DashBoardState extends State<DashBoard> {
                   children: [
                     InkWell(
                       onTap: () async {
-                        Navigation.Select_Frame(context);
+                        Navigator.of(context).pushNamed("select_frame");
                       },
                       child: LableWidget(
                         text: "Frame",
@@ -249,7 +241,8 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigation.ImagePage(context);
+                        Navigator.of(context)
+                            .pushNamed("imagepage", arguments: ['Yes']);
                       },
                       child: LableWidget(
                         text: "Album",
@@ -264,7 +257,10 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        showDialog(context: context, builder: (context) => const RateDialog());
+                        showDialog(
+                          context: context,
+                          builder: (context) => const RateDialog(),
+                        );
                       },
                       child: LableWidget(
                         text: "Rate",
@@ -287,19 +283,4 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 
-  final picker = ImagePicker();
-  Future getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    setState(
-      () {
-        if (pickedFile != null) {
-          userImage = pickedFile.path;
-        } else {
-          // ignore: avoid_print
-          print('No image selected.');
-        }
-      },
-    );
-  }
 }

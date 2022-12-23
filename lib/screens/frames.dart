@@ -24,22 +24,7 @@ class _FramesState extends State<Frames> {
   void initState() {
     super.initState();
     [FirebaseAnalyticsObserver(analytics: analytics)];
-    InterstitialAd.load(
-      adUnitId: 'ca-app-pub-6380676578937457/8956369719',
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          setState(() {
-            isLoaded = true;
-            interstitialAd = ad;
-          });
-          print('ad loaded...');
-        },
-        onAdFailedToLoad: (error) {
-          print('Interstitial Ad failed...');
-        },
-      ),
-    );
+    interstitialAds();
   }
 
   void interstitialAds() {
@@ -98,10 +83,10 @@ class _FramesState extends State<Frames> {
                     res[1],
                   ]);
                 }
-                // interstitialAds();
-                // if (isLoaded) {
-                //   interstitialAd.show();
-                // }
+                interstitialAds();
+                if (isLoaded) {
+                  interstitialAd.show();
+                }
               },
               child: Card(
                 child: Container(
@@ -119,7 +104,7 @@ class _FramesState extends State<Frames> {
           );
         },
         staggeredTileBuilder: (int index) =>
-            StaggeredTile.count(1, index.isEven ? 2 : 1),
+            StaggeredTile.count(1, index.isEven ? 1.5 : 01),
       ),
     );
   }

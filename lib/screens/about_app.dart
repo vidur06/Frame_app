@@ -14,7 +14,9 @@ class _AboutAppState extends State<AboutApp> {
   @override
   void initState() {
     super.initState();
+    // ignore: unused_label
     navigatorObservers:
+    // ignore: unnecessary_statements
     [FirebaseAnalyticsObserver(analytics: analytics)];
   }
   @override
@@ -89,32 +91,6 @@ class _AboutAppState extends State<AboutApp> {
               height: 2,
               indent: width * 0.03,
               endIndent: width * 0.03,
-            ),
-            const Spacer(),
-             Padding(
-              padding:const EdgeInsets.only(bottom: 15),
-              child: Column(
-                children:const [
-                  Text(
-                    'Version',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    '2.0.2',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
             ),
           ],
         ),

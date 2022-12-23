@@ -54,6 +54,7 @@ class _StickerImageState extends State<StickerImage> {
   Offset _startingFocalPoint = Offset.zero;
   Offset _offset = Offset.zero;
   double _rotation = 0.0;
+  bool isSelected = false; 
 
   @override
   void dispose() {
@@ -75,7 +76,6 @@ class _StickerImageState extends State<StickerImage> {
             Center(
               child: Transform(
                 transform: Matrix4.diagonal3(vec.Vector3(_scale, _scale, _scale)),
-                // ..setRotationZ(_rotation),
                 alignment: FractionalOffset.center,
                 child: Transform.rotate(
                   angle: _rotation,
@@ -99,16 +99,12 @@ class _StickerImageState extends State<StickerImage> {
                           Offset(min(__offset.dx, widget.viewport.width), min(__offset.dy, widget.viewport.height));
                       setState(() {
                         _offset = __offset;
-                        // print("move - $_offset, scale : $_scale");
                       });
                     },
-
-                    onScaleEnd: (details){
-                      if(_offset.dy <= 550 && _offset.dy >= 390 && _offset.dx >= 120 && _offset.dx <= 200){
-                        setState(() {
-                          this.widget.onTapRemove(this.widget);
-                        });
-                      }
+                    onTap: (){
+                      setState(() {
+                        isSelected = !isSelected;
+                      });
                     },
                     onDoubleTap: () {
                       setState(() {
@@ -120,6 +116,24 @@ class _StickerImageState extends State<StickerImage> {
                 ),
               ),
             ),
+            (isSelected == true)
+                ? Positioned(
+                    top: 12,
+                    right: 12,
+                    width: 24,
+                    height: 24,
+                    child: Container(
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon:const  Icon(Icons.remove_circle),
+                        color:const Color.fromRGBO(255, 0, 0, 1.0),
+                        onPressed: () {
+                          this.widget.onTapRemove(this.widget);
+                        },
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

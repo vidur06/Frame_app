@@ -37,7 +37,7 @@ class _SetImageState extends State<SetImage> {
             Navigator.of(context).pushNamedAndRemoveUntil(
               'frames',
               (route) => false,
-              arguments: [res[2],res[3]],
+              arguments: [res[2], res[3]],
             );
           },
           icon: const Icon(
@@ -46,29 +46,60 @@ class _SetImageState extends State<SetImage> {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           SizedBox(
             height: 400,
             child:
                 imagefile != null ? Image.file(imagefile!) : Image.file(res[0]),
           ),
-          Container(
-            height: 50,
-            width: 400,
-            color: Colors.grey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    cropImage(res[0].path);
-                  },
-                  child: const Text("crop image"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      cropImage(res[0].path);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: Colors.white70,
+                          width: 1,
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.crop_outlined,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    child: Text(
+                      'Crop Image',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                       Navigator.of(context).pushNamed(
                       "framepage",
                       arguments: [
                         (imagefile != null) ? imagefile : res[0],
@@ -77,11 +108,42 @@ class _SetImageState extends State<SetImage> {
                         res[3],
                       ],
                     );
-                  },
-                  child: const Text("Add Frame"),
-                ),
-              ],
-            ),
+                
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: Colors.white70,
+                          width: 1,
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.filter_frames,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    child: Text(
+                      'Add Frame',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),

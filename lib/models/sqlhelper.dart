@@ -1,8 +1,7 @@
 // ignore: depend_on_referenced_packages
+import 'package:festival_frame/models/frame_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'model.dart';
 
 class DBHelper {
   DBHelper._();

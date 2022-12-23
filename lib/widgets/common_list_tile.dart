@@ -20,7 +20,6 @@ class CommonListTile extends StatelessWidget {
                   height: height,
                   width: width,
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         content,

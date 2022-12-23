@@ -1,5 +1,5 @@
+import 'package:festival_frame/widgets/rating_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:rating_dialog/rating_dialog.dart';
 import 'package:store_redirect/store_redirect.dart';
 
 class RateDialog extends StatelessWidget {
@@ -8,32 +8,29 @@ class RateDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RatingDialog(
-    initialRating: 1.0,
-    title: const Text(
-      'Rating Dialog',
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontSize: 25,
-        fontWeight: FontWeight.bold,
+      initialRating: 1.0,
+      title: const Text(
+        'Rate Us',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    ),
-    message: const Text(
-      'Tap a star to set your rating. Add more description here if you want.',
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 15),
-    ),
-    image: const FlutterLogo(size: 100),
-    submitButtonText: 'Submit',
-    onCancelled: () => print('cancelled'),
-    onSubmitted: (response) {
-      print('rating: ${response.rating}, comment: ${response.comment}');
-      if (response.rating < 3.0) {
-      } else {
+      message: const Text(
+        'Tap a star to set your rating. Add more description here if you want.',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 15),
+      ),
+      submitButtonText: 'Submit',
+      onCancelled: () => print('cancelled'),
+      onSubmitted: (response) {
+        print('rating: ${response.rating}, comment: ${response.comment}');
         StoreRedirect.redirect(
-            androidAppId: 'shri.complete.fitness.gymtrainingapp',
-            iOSAppId: 'com.example.festivalFrame');
-      }
-    },
-  );
+          androidAppId: 'com.example.festival_frame',
+          iOSAppId: 'com.example.festivalFrame',
+        );
+      },
+    );
   }
 }

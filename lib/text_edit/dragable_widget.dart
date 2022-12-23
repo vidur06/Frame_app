@@ -12,9 +12,6 @@ class DragableWidget extends StatelessWidget {
   });
 
   final int widgetId;
-
-  /// we font set the child as final
-  /// so when we edit we can replace this with we child
   DragableWidgetChild child;
   final void Function(int, DragableWidgetChild)? onPress;
   final void Function(int)? onLongPress;

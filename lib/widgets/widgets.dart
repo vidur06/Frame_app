@@ -25,17 +25,12 @@ class LableWidget extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              // stops: [
-              //   0.4,
-              //   0.6,
-              // ],
               colors: [
                 color1,
                 color2,
               ],
             ),
           ),
-          // color: color,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -58,3 +53,5 @@ class LableWidget extends StatelessWidget {
     );
   }
 }
+
+

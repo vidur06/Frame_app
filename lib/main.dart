@@ -1,12 +1,9 @@
 import 'package:festival_frame/screens/about_app.dart';
 import 'package:festival_frame/screens/compress_image.dart';
 import 'package:festival_frame/screens/frames.dart';
-import 'package:festival_frame/screens/final.dart';
-import 'package:festival_frame/screens/image_show.dart';
 import 'package:festival_frame/screens/re_frames.dart';
 import 'package:festival_frame/screens/savePage.dart';
 import 'package:festival_frame/screens/settings.dart';
-import 'package:festival_frame/screens/text_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -41,14 +38,11 @@ void main() async {
         "select_frame": (context) => const SelectFrame(),
         "imagepage": (context) => const AlbumPage(),
         "setting": (context) => const Setting(),
-        "sticker": (context) => const StickerPage(),
         "frames": (context) => const Frames(),
         're_frames': (context) => const ReFrames(),
         'savePage': (context) => const SavePage(),
-        'image_show': (context) => const ImageShow(),
         'compress_image': (context) => const CompressImage(),
         'about_app':(context) => const AboutApp(),
-        'text_page':(context) => const TextPage(),
       },
       navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
     ),

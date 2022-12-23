@@ -26,13 +26,29 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dynamic height = MediaQuery.of(context).size.height;
+    final dynamic width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Image.asset(
-        "assets/images/splash.jpg",
-        key: const ValueKey('image'),
+      body: Stack(
+        children: [
+          Container(
+            height: height,
+            width: width,
+            color: Colors.white,
+            child: Image.asset(
+              "assets/images/splash.png",
+              fit: BoxFit.fill,
+              key: const ValueKey('image'),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: height * 0.83, left: width * 0.45),
+            child:const CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
-

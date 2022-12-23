@@ -53,10 +53,10 @@ class _CompressImageState extends State<CompressImage> {
                     final date = DateTime.now().millisecondsSinceEpoch;
                     final directory = Directory('/storage/emulated/0/Download');
                     final dirPath =
-                        Directory('${directory.path}/Demo_app').create();
+                        Directory('${directory.path}/FESTIVAL_FRAME').create();
                     print('path: $dirPath');
                     final directoryPath =
-                        Directory('/storage/emulated/0/Download/Demo_app');
+                        Directory('/storage/emulated/0/Download/FESTIVAL_FRAMEp');
                     final file =
                         await File('${directoryPath.path}/$date.jpg').create();
                     print('file : $file');
@@ -66,6 +66,7 @@ class _CompressImageState extends State<CompressImage> {
                       SnackBar(
                         content: Text("Successfully download ${file.path}"),
                         backgroundColor: Colors.blue,
+                        duration: const Duration(seconds: 1),
                       ),
                     );
                   },
@@ -179,24 +180,19 @@ class _CompressImageState extends State<CompressImage> {
                   children: [
                     SizedBox(
                       width: width * 0.4,
-                      // height: height * 0.3,
                       child: Image.memory(
                         res,
-                        // fit: BoxFit.fitHeight,
                       ),
                     ),
                     (_compressedFile != null)
                         ? SizedBox(
                             width: width * 0.4,
-                            // height: height * 0.3,
                             child: Image.memory(
                               _compressedFile!,
-                              // fit: BoxFit.fitHeight,
                             ),
                           )
                         : SizedBox(
                             width: width * 0.4,
-                            // height: height * 0.3,
                           ),
                   ],
                 ),
@@ -246,8 +242,6 @@ class _CompressImageState extends State<CompressImage> {
   Future<Uint8List> testComporessList(Uint8List list) async {
     var result = await FlutterImageCompress.compressWithList(
       list,
-      // minHeight: 1920,
-      // minWidth: 1080,
       quality: (originalKb.toInt() < 1000) ? 70 : 98,
     );
     setState(() {

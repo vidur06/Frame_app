@@ -12,7 +12,5 @@ class EditPhotoState with _$EditPhotoState {
     @Default(EditState.idle) EditState editState,
     @Default(0) double opacityLayer,
     @Default([]) List<DragableWidget> widgets,
-    // @Default(DownloadStatus.initial) DownloadStatus downloadStatus,
-    // @Default(DownloadStatus.initial) DownloadStatus shareStatus,
   }) = _EditPhotoState;
 }

@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers, sized_box_for_whitespace, avoid_print
-
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SavePage extends StatefulWidget {
   const SavePage({super.key});
@@ -11,13 +12,16 @@ class SavePage extends StatefulWidget {
 }
 
 class _SavePageState extends State<SavePage> {
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   BannerAd? bannerAd;
   bool isLoaded = false;
-  RewardedAd? rewardedAd;
-  bool isRewarded = false;
   @override
   void initState() {
     super.initState();
+    // ignore: unused_label
+    navigatorObservers:
+    // ignore: unnecessary_statements
+    [FirebaseAnalyticsObserver(analytics: analytics)];
     bannerAd = BannerAd(
       size: AdSize.banner,
       adUnitId: 'ca-app-pub-6380676578937457/2423832529',
@@ -44,31 +48,13 @@ class _SavePageState extends State<SavePage> {
 
   }
 
-   rewardedAds() {
-    RewardedAd.load(
-      adUnitId: 'ca-app-pub-6380676578937457/8194624838',
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          rewardedAd = ad;
-          setState(() {
-            isRewarded = true;
-          });
-          print('ad reward');
-        },
-        onAdFailedToLoad: (error) {
-          print('reward failed');
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    dynamic arg = ModalRoute.of(context)!.settings.arguments;
+    final dynamic arg = ModalRoute.of(context)!.settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.black,
         title: const Text(
           'Saved Data',
           style: TextStyle(
@@ -82,12 +68,6 @@ class _SavePageState extends State<SavePage> {
             onPressed: () {
               Navigator.of(context)
                   .pushNamedAndRemoveUntil('/', (route) => false);
-                  rewardedAds();
-              if (isRewarded) {
-                rewardedAd!.show(
-                  onUserEarnedReward: (ad, reward) {},
-                );
-              }
             },
             icon: const Icon(Icons.home),
           ),
@@ -100,18 +80,14 @@ class _SavePageState extends State<SavePage> {
             Container(
               height: 500,
               width: 380,
-              child: Image(image: MemoryImage(arg)),
+              child: Image(image: MemoryImage(arg[0])),
             ),
             ElevatedButton.icon(
-              onPressed: () {
-                rewardedAds();
-                if (isRewarded) {
-                  rewardedAd!.show(
-                    onUserEarnedReward: (ad, reward) {},
-                  );
-                }
+              onPressed: () async {
+                Share.shareFiles(
+                  [arg[1].path],
+                );
               },
-              // style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
               icon: const Icon(
                 Icons.share,
                 color: Colors.white,
