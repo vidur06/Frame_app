@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_statements, avoid_print
+// ignore_for_file: unnecessary_statements, avoid_print, use_build_context_synchronously, require_trailing_commas
 
 import 'dart:io';
 

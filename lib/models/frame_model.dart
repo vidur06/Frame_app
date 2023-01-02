@@ -54,12 +54,10 @@ class DrawerFilter {
 class SelectFrameField {
   final String img;
   final String name;
-  final Color color;
 
   SelectFrameField({
     required this.img,
     required this.name,
-    required this.color,
   });
 }
 

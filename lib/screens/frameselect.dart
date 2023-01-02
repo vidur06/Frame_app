@@ -57,6 +57,8 @@ class _SelectFrameState extends State<SelectFrame> {
 
   @override
   Widget build(BuildContext context) {
+    final dynamic height = MediaQuery.of(context).size.height;
+    final dynamic width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Select Frame"),
@@ -116,7 +118,7 @@ class _SelectFrameState extends State<SelectFrame> {
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
-              crossAxisSpacing: 2.0,
+              crossAxisSpacing: 1.3,
               mainAxisSpacing: 12.0,
               children: List.generate(items.length, (i) {
                 return GestureDetector(
@@ -138,14 +140,18 @@ class _SelectFrameState extends State<SelectFrame> {
                         alignment: Alignment.center,
                         children: [
                           Container(
-                            height: 154,
-                            width: 170,
-                            color: items[i].color,
+                            height: height * 0.2,
+                            width: width * 0.41,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                            color: Colors.grey[300],
+                            ),
                           ),
                           Container(
-                            height: 145,
-                            width: 145,
+                            height: height * 0.18,
+                            width: width * 0.37,
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
                               image: DecorationImage(
                                 image: AssetImage("${items[i].img}"),
                                 fit: BoxFit.cover,

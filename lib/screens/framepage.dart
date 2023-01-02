@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_statements, avoid_print, sized_box_for_whitespace, use_named_constants, require_trailing_commas
+// ignore_for_file: unnecessary_statements, avoid_print, sized_box_for_whitespace, use_named_constants, require_trailing_commas, avoid_unnecessary_containers, use_build_context_synchronously
 
 import 'dart:async';
 import 'dart:io';
@@ -158,11 +158,11 @@ class _PhotoFramePageState extends State<PhotoFramePage> {
                       print('file : $file');
                       file.writeAsBytes(capturedImage);
 
-                      Map<String, dynamic> data = {
+                      final Map<String, dynamic> data = {
                         'image': img,
                       };
-                      Storage s = Storage.fromMap(data);
-                      int id = await DBHelper.dbHelper.insert(s);
+                      final Storage s = Storage.fromMap(data);
+                      await DBHelper.dbHelper.insert(s);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text("Successfully download ${file.path}"),
@@ -304,7 +304,7 @@ class _PhotoFramePageState extends State<PhotoFramePage> {
                 child: Container(
                   height: double.infinity,
                   width: double.infinity,
-                  color: const Color.fromARGB(255, 255, 255, 255),
+                  color:const Color.fromARGB(255, 255, 255, 255),
                 ),
               ),
             ),
@@ -546,7 +546,7 @@ class _PhotoFramePageState extends State<PhotoFramePage> {
                                   }
 
                                   if (filterData == 'Frames') {
-                                    setState(() {});
+                                    setState(() {});  
                                     Navigator.of(context).pushNamed(
                                       're_frames',
                                       arguments: [

@@ -4,32 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class RatingDialog extends StatefulWidget {
+
   final Text title;
-
   final Text? message;
-
   final Widget? image;
-
   final Color starColor;
-
   final double starSize;
-
   final bool force;
-
   final bool showCloseButton;
-
   final double initialRating;
-
   final bool enableComment;
-
   final String commentHint;
-
   final String submitButtonText;
-
   final TextStyle submitButtonTextStyle;
-
   final Function(RatingDialogResponse) onSubmitted;
-
   final Function? onCancelled;
 
   const RatingDialog({
@@ -68,6 +56,7 @@ class _RatingDialogState extends State<RatingDialog> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final _content = Stack(
       alignment: Alignment.topRight,
       children: <Widget>[

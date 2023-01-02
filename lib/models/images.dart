@@ -1,28 +1,28 @@
+// ignore_for_file: require_trailing_commas
+
 import 'package:festival_frame/models/frame_model.dart';
 import 'package:flutter/material.dart';
 import 'package:on_image_matrix/on_image_matrix.dart';
 
 List<ColorFilter> filterList = [
-    OnImageFilters.normal,
-    OnImageFilters.blueSky,
-    OnImageFilters.gray,
-    OnImageFilters.grayHighBrightness,
-    OnImageFilters.grayHighExposure,
-    OnImageFilters.grayLowBrightness,
-    const ColorFilter.srgbToLinearGamma(),
-    const ColorFilter.mode(Colors.grey, BlendMode.darken),
-    OnImageFilters.hueRotateWith2,
-    OnImageFilters.invert,
-    OnImageFilters.kodachrome,
-    OnImageFilters.protanomaly,
-    OnImageFilters.random,
-    OnImageFilters.sepia,
-    OnImageFilters.sepium,
-    OnImageFilters.technicolor,
-    OnImageFilters.vintage,
-  ];
-
-
+  OnImageFilters.normal,
+  OnImageFilters.blueSky,
+  OnImageFilters.gray,
+  OnImageFilters.grayHighBrightness,
+  OnImageFilters.grayHighExposure,
+  OnImageFilters.grayLowBrightness,
+  const ColorFilter.srgbToLinearGamma(),
+  const ColorFilter.mode(Colors.grey, BlendMode.darken),
+  OnImageFilters.hueRotateWith2,
+  OnImageFilters.invert,
+  OnImageFilters.kodachrome,
+  OnImageFilters.protanomaly,
+  OnImageFilters.random,
+  OnImageFilters.sepia,
+  OnImageFilters.sepium,
+  OnImageFilters.technicolor,
+  OnImageFilters.vintage,
+];
 
 List<FrameData> fImage = <FrameData>[
   FrameData(
@@ -92,7 +92,7 @@ List<FrameData> fImage = <FrameData>[
     img: '',
     name: 'Diwali',
     list: [
-     "assets/images/d2.png",
+      "assets/images/d2.png",
       "assets/images/d3.png",
       "assets/images/d6.png",
       "assets/images/d7.png",
@@ -396,7 +396,7 @@ List<FrameData> fImage = <FrameData>[
       "assets/images/c6.png",
       "assets/images/c8.png",
       "assets/images/c9.png",
-     "assets/images/c11.png",
+      "assets/images/c11.png",
       "assets/images/c12.png",
       "assets/images/c16.png",
       "assets/images/c17.png",
@@ -673,10 +673,6 @@ List<FrameData> fImage = <FrameData>[
   ),
 ];
 
-
-
-
-
 List<DrawerFilter> drawerField = <DrawerFilter>[
   DrawerFilter(img: 'assets/iconImage/dandiya.png', name: 'Navratri'),
   DrawerFilter(img: 'assets/iconImage/diya.png', name: 'Diwali'),
@@ -692,16 +688,24 @@ List<DrawerFilter> drawerField = <DrawerFilter>[
 
 
 List<SelectFrameField> selectFrameField = <SelectFrameField>[
-  SelectFrameField(img: "assets/images/navratri.png", name: 'Navratri', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/diwali.jpg", name: 'Diwali', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/rakhi.jpg", name: 'Rakhi', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/mkr.jpg", name: 'Makar Sankranti', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/holi.png", name: 'Holi', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/janmashtmi.jpg", name: 'Janmashtmi', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/chrismas.jpg", name: 'Marry Chrishmas', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/year.jpeg", name: 'New Year', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/ganesh.jpg", name: 'Ganesh Chaturthi', color:const Color.fromARGB(255, 208, 197, 206),),
-  SelectFrameField(img: "assets/images/ind.jpg", name: 'Independence Day', color:const Color.fromARGB(255, 208, 197, 206),),
+  SelectFrameField(
+      img: "assets/images/navratri.jpg", name: 'Navratri'),
+  SelectFrameField(
+      img: "assets/images/diwali.jpg", name: 'Diwali'),
+  SelectFrameField(img: "assets/images/rakhi.jpg", name: 'Rakhi'),
+  SelectFrameField(
+      img: "assets/images/mkr.jpg", name: 'Makar Sankranti'),
+  SelectFrameField(img: "assets/images/holi.jpg", name: 'Holi'),
+  SelectFrameField(
+      img: "assets/images/janmashtami.png", name: 'Janmashtmi'),
+  SelectFrameField(
+      img: "assets/images/chrismas.jpg", name: 'Marry Chrishmas'),
+  SelectFrameField(
+      img: "assets/images/year.jpeg", name: 'New Year'),
+  SelectFrameField(
+      img: "assets/images/ganesh.jpeg", name: 'Ganesh Chaturthi'),
+  SelectFrameField(
+      img: "assets/images/ind.jpg", name: 'Independence Day'),
 ];
 
 List<FilterImg> filterImg = <FilterImg>[
